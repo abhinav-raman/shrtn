@@ -1,18 +1,13 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 export default function GoogleLogin() {
 	const { data: session } = useSession();
-	if (session && session.user) {
-		return (
-			<>
-				Signed in as {session.user.email} <br />
-				<button onClick={() => signOut()}>Sign out</button>
-			</>
-		);
-	}
+
 	return (
-		<>
-			Not signed in <br />
-			<button onClick={() => signIn()}>Sign in</button>
-		</>
+		<button
+			className="border border-gray-600 rounded-xl p-2"
+			onClick={() => signIn("google")}
+		>
+			Login with Google
+		</button>
 	);
 }
