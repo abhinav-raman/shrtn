@@ -1,8 +1,31 @@
-import type { NextPage } from "next";
+import type {
+	GetServerSideProps,
+	GetServerSidePropsContext,
+	NextPage,
+} from "next";
+import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Image from "next/image";
+import Popup from "reactjs-popup";
+
 import GoogleLogin from "../components/googleLoginBtn";
 
-const Home: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async (
+	context: GetServerSidePropsContext
+) => {
+	const session = await getSession(context);
+	console.log(session);
+
+	return {
+		props: {
+			userData: session,
+		},
+	};
+};
+
+const Home: NextPage = ({ userData }: any) => {
+	const { data: session } = useSession();
+
 	return (
 		<div>
 			<Head>
@@ -12,11 +35,41 @@ const Home: NextPage = () => {
 			</Head>
 
 			<main className="p-4">
-				<h1 className="w-full text-center font-medium text-5xl">
-					<span>Shrt.en </span>
-					your links
-				</h1>
-				<GoogleLogin />
+				<div className="w-full text-center inline-flex justify-center">
+					<h1 className="font-medium text-5xl">
+						<span>Shrt.en </span>
+						your links
+					</h1>
+					{session && (
+						<>
+							<Popup
+								trigger={
+									<button className="h-[3rem] absolute right-4 aspect-square rounded-full">
+										<Image
+											src={userData.user.image}
+											alt="Profile"
+											layout="responsive"
+											height={"100%"}
+											width={"100%"}
+											className="rounded-full"
+										/>
+									</button>
+								}
+								position="bottom right"
+							>
+								<div className="max-w-max p-2 border border-gray-400 rounded">
+									<p className="whitespace-nowrap">
+										Welcome, {session.user?.name?.split(" ")[0]}
+									</p>
+									<button onClick={() => signOut()}>Logout</button>
+								</div>
+							</Popup>
+						</>
+					)}
+				</div>
+				<div className="w-full text-center mt-[20vh]">
+					{!session && <GoogleLogin />}
+				</div>
 			</main>
 		</div>
 	);
