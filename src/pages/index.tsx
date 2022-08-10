@@ -6,6 +6,7 @@ import type {
 import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
+import { useEffect, useId, useState } from "react";
 import Popup from "reactjs-popup";
 
 import GoogleLogin from "../components/googleLoginBtn";
@@ -14,8 +15,6 @@ export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const session = await getSession(context);
-	console.log(session);
-
 	return {
 		props: {
 			userData: session,
@@ -25,6 +24,8 @@ export const getServerSideProps: GetServerSideProps = async (
 
 const Home: NextPage = ({ userData }: any) => {
 	const { data: session } = useSession();
+
+	const [enteredLink, setEnteredLink] = useState("");
 
 	return (
 		<div>
@@ -40,35 +41,41 @@ const Home: NextPage = ({ userData }: any) => {
 						<span>Shrt.en </span>
 						your links
 					</h1>
-					{session && (
-						<>
-							<Popup
-								trigger={
-									<button className="h-[3rem] absolute right-4 aspect-square rounded-full">
-										<Image
-											src={userData.user.image}
-											alt="Profile"
-											layout="responsive"
-											height={"100%"}
-											width={"100%"}
-											className="rounded-full"
-										/>
-									</button>
-								}
-								position="bottom right"
-							>
-								<div className="max-w-max p-2 border border-gray-400 rounded">
-									<p className="whitespace-nowrap">
-										Welcome, {session.user?.name?.split(" ")[0]}
-									</p>
-									<button onClick={() => signOut()}>Logout</button>
-								</div>
-							</Popup>
-						</>
+					{userData && (
+						<Popup
+							trigger={
+								<button className="h-[3rem] absolute right-4 aspect-square rounded-full">
+									<Image
+										src={userData.user.image}
+										alt="Profile"
+										layout="responsive"
+										height={"100%"}
+										width={"100%"}
+										className="rounded-full"
+									/>
+								</button>
+							}
+							position="bottom right"
+						>
+							<div className="max-w-max p-2 border border-gray-400 rounded">
+								<p className="whitespace-nowrap">
+									Welcome, {userData.user?.name?.split(" ")[0]}
+								</p>
+								<button onClick={() => signOut()}>Logout</button>
+							</div>
+						</Popup>
 					)}
 				</div>
 				<div className="w-full text-center mt-[20vh]">
-					{!session && <GoogleLogin />}
+					{!userData && <GoogleLogin />}
+					{userData && (
+						<input
+							className="border border-gray-400 rounded p-2"
+							placeholder="Enter your link"
+							value={enteredLink}
+							onChange={({ target }) => setEnteredLink(target.value)}
+						/>
+					)}
 				</div>
 			</main>
 		</div>
