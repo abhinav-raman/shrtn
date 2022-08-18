@@ -27,6 +27,13 @@ const Home: NextPage = ({ userData }: any) => {
 
 	const [enteredLink, setEnteredLink] = useState("");
 
+	const getSLug = async () => {
+		const result = await (
+			await fetch(`/api/get-url?slug=${enteredLink.toLowerCase()}`)
+		).json();
+		console.log(result);
+	};
+
 	return (
 		<div>
 			<Head>
@@ -76,6 +83,15 @@ const Home: NextPage = ({ userData }: any) => {
 							onChange={({ target }) => setEnteredLink(target.value)}
 						/>
 					)}
+				</div>
+				<div className="w-full text-center my-4">
+					<button
+						className="border border-gray-600 p-2 rounded disabled:bg-gray-100 disabled:border-gray-500 disabled:text-gray-500"
+						onClick={getSLug}
+						disabled={!enteredLink.length}
+					>
+						Get Link
+					</button>
 				</div>
 			</main>
 		</div>
