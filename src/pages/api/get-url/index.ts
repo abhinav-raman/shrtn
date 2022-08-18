@@ -11,7 +11,7 @@ export default async function handler(
 		const response = await (
 			await fetch(`${BASE_URL}/api/get-slug/${slug}`)
 		).json();
-		return res.json({ ...response, url: BASE_URL });
+		return res.json(response);
 	} catch (error) {
 		return res.json(error);
 	}
