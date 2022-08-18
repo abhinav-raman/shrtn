@@ -1,16 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { BASE_URL } from "../../../constants/url";
 
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
 	const slug = req.query["slug"];
+
 	try {
 		const response = await (
-			await fetch(`http://localhost:3000/api/get-slug/${slug}`)
+			await fetch(`${BASE_URL}/api/get-slug/${slug}`)
 		).json();
-		console.log("data in FE", response);
-		return res.json(response);
+		return res.json({ ...response, url: BASE_URL });
 	} catch (error) {
 		return res.json(error);
 	}
