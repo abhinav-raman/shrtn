@@ -27,5 +27,7 @@ export default async function handler(
 
 	console.log("data in BE", data);
 
-	return res.status(200).json({ status: 200, data: data });
+	return res
+		.status(200)
+		.json({ status: 200, data: JSON.parse(JSON.stringify(data)) });
 }
