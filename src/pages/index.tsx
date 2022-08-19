@@ -6,7 +6,7 @@ import type {
 import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useId, useState } from "react";
+import { useState } from "react";
 import Popup from "reactjs-popup";
 
 import GoogleLogin from "../components/googleLoginBtn";
@@ -26,11 +26,13 @@ const Home: NextPage = ({ userData }: any) => {
 	const { data: session } = useSession();
 
 	const [enteredLink, setEnteredLink] = useState("");
+	const [responseData, setResponseData] = useState<undefined | any>(null);
 
 	const getSLug = async () => {
-		const result = await (
+		const result: any = await (
 			await fetch(`/api/get-url?slug=${enteredLink.toLowerCase()}`)
 		).json();
+		setResponseData(result);
 		console.log(result);
 	};
 
@@ -81,6 +83,9 @@ const Home: NextPage = ({ userData }: any) => {
 							placeholder="Enter your link"
 							value={enteredLink}
 							onChange={({ target }) => setEnteredLink(target.value)}
+							onKeyDown={(e) => {
+								e.key === "Enter" && getSLug();
+							}}
 						/>
 					)}
 				</div>
@@ -92,6 +97,19 @@ const Home: NextPage = ({ userData }: any) => {
 					>
 						Get Link
 					</button>
+				</div>
+				<div className="w-full text-center my-4">
+					{responseData && responseData.data && (
+						<a
+							className="text-blue-600"
+							href={responseData.data.url}
+							target="_blank"
+							rel="noreferrer"
+						>
+							{responseData.data.url}
+						</a>
+					)}
+					{responseData && responseData.error}
 				</div>
 			</main>
 		</div>
