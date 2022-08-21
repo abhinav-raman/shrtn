@@ -6,6 +6,7 @@ import type {
 import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Popup from "reactjs-popup";
 
@@ -25,12 +26,25 @@ export const getServerSideProps: GetServerSideProps = async (
 const Home: NextPage = ({ userData }: any) => {
 	const { data: session } = useSession();
 
-	const [enteredLink, setEnteredLink] = useState("");
+	const [enteredUserLink, setEnteredUserLink] = useState("");
+	const [enteredSlug, setEnteredSlug] = useState("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
 
-	const getSLug = async () => {
+	// const getSLug = async () => {
+	// 	const result: any = await (
+	// 		await fetch(`/api/get-url?slug=${enteredLink.toLowerCase()}`)
+	// 	).json();
+	// 	setResponseData(result);
+	// 	console.log(result);
+	// };
+
+	const createShortLink = async () => {
+		console.log(enteredUserLink, enteredSlug);
+
 		const result: any = await (
-			await fetch(`/api/get-url?slug=${enteredLink.toLowerCase()}`)
+			await fetch(
+				`/api/create-url?slug=${enteredSlug}&userLink=${enteredUserLink}`
+			)
 		).json();
 		setResponseData(result);
 		console.log(result);
@@ -76,26 +90,33 @@ const Home: NextPage = ({ userData }: any) => {
 					)}
 				</div>
 				<div className="w-full text-center mt-[20vh]">
-					{!userData && <GoogleLogin />}
-					{userData && (
-						<input
-							className="border border-gray-400 rounded p-2"
-							placeholder="Enter your link"
-							value={enteredLink}
-							onChange={({ target }) => setEnteredLink(target.value)}
-							onKeyDown={(e) => {
-								e.key === "Enter" && getSLug();
-							}}
-						/>
-					)}
+					{(process.env.NODE_ENV === "development"
+						? "localhost:3000"
+						: "http://shrt-en.vercel.app") + "/ "}
+					<input
+						name="slug"
+						value={enteredSlug}
+						className="border border-gray-400 rounded px-2 py-1"
+						placeholder="Choose a slug"
+						onChange={({ target }) => setEnteredSlug(target.value)}
+					/>
+				</div>
+				<div className="w-full text-center my-2">
+					<input
+						name="link"
+						value={enteredUserLink}
+						className="border border-gray-400 rounded px-2 py-1"
+						placeholder="Enter a link"
+						onChange={({ target }) => setEnteredUserLink(target.value)}
+					/>
 				</div>
 				<div className="w-full text-center my-4">
 					<button
-						className="border border-gray-600 p-2 rounded disabled:bg-gray-100 disabled:border-gray-500 disabled:text-gray-500"
-						onClick={getSLug}
-						disabled={!enteredLink.length}
+						className="border border-gray-600 p-2 rounded disabled:bg-gray-100 disabled:border-gray-500 disabled:text-gray-500 disabled:cursor-not-allowed"
+						onClick={createShortLink}
+						disabled={!enteredUserLink.length || !enteredSlug.length}
 					>
-						Get Link
+						Create
 					</button>
 				</div>
 				<div className="w-full text-center my-4">
