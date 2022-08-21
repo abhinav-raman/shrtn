@@ -16,6 +16,7 @@ model ShortLink {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   url       String   @db.VarChar(1000)
+  shortUrl  String   @db.VarChar(1000)
 
   slug String @unique
 
