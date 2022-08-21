@@ -7,7 +7,7 @@ import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 
 import GoogleLogin from "../components/googleLoginBtn";
@@ -29,14 +29,6 @@ const Home: NextPage = ({ userData }: any) => {
 	const [enteredUserLink, setEnteredUserLink] = useState("");
 	const [enteredSlug, setEnteredSlug] = useState("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
-
-	// const getSLug = async () => {
-	// 	const result: any = await (
-	// 		await fetch(`/api/get-url?slug=${enteredLink.toLowerCase()}`)
-	// 	).json();
-	// 	setResponseData(result);
-	// 	console.log(result);
-	// };
 
 	const createShortLink = async () => {
 		console.log(enteredUserLink, enteredSlug);
@@ -123,11 +115,11 @@ const Home: NextPage = ({ userData }: any) => {
 					{responseData && responseData.data && (
 						<a
 							className="text-blue-600"
-							href={responseData.data.url}
+							href={responseData.data.shortUrl}
 							target="_blank"
 							rel="noreferrer"
 						>
-							{responseData.data.url}
+							{responseData.data.shortUrl}
 						</a>
 					)}
 					{responseData && responseData.error}
