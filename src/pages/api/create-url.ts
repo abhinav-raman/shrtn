@@ -21,7 +21,19 @@ export default async function handler(
 		return res.status(404).json({ error: "Please enter correct userLink." });
 	}
 
-	console.log("valid prarams");
+	const previousLink = await prisma.shortLink.findFirst({
+		where: {
+			slug: {
+				equals: slug,
+			},
+		},
+	});
+
+	if (previousLink) {
+		return res.status(404).json({
+			error: `Please enter another slug. This slug is already in use.`,
+		});
+	}
 
 	const data = await prisma.shortLink.create({
 		data: {
