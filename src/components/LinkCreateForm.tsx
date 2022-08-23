@@ -17,39 +17,42 @@ const LinkCreateForm = () => {
 		console.log(result);
 	};
 	return (
-		<section className="w-1/2 flex justify-center flex-col">
-			<div className="w-full text-center">
-				{(process.env.NODE_ENV === "development"
-					? "localhost:3000"
-					: "http://shrt-en.vercel.app") + "/ "}
+		<section className="w-1/2 flex justify-center flex-col p-4">
+			<div className="w-full flex my-2">
+				<p className="pr-2 py-1">
+					{(process.env.NODE_ENV === "development"
+						? "localhost:3000"
+						: "http://shrt-en.vercel.app") + "/ "}
+				</p>
 				<input
 					name="slug"
 					value={enteredSlug}
-					className="border border-gray-400 rounded px-2 py-1"
+					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
 					placeholder="Choose a slug"
 					onChange={({ target }) => setEnteredSlug(target.value)}
 				/>
 			</div>
-			<div className="w-full text-center my-2">
+			<div className="w-full flex my-2">
+				<p className="pr-2 py-1">Link</p>
 				<input
 					name="link"
 					value={enteredUserLink}
-					className="border border-gray-400 rounded px-2 py-1"
+					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
 					placeholder="Enter a link"
 					onChange={({ target }) => setEnteredUserLink(target.value)}
 				/>
 			</div>
-			<div className="w-full text-center my-4">
+			<div className="w-full text-left my-4">
 				<button
-					className="border border-gray-600 p-2 rounded disabled:bg-gray-100 disabled:border-gray-500 disabled:text-gray-500 disabled:cursor-not-allowed"
+					className="px-3 py-1 rounded transition-all bg-teal-600 text-white disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
 					onClick={createShortLink}
 					disabled={!enteredUserLink.length || !enteredSlug.length}
 				>
 					Create
 				</button>
 			</div>
-			<div className="w-full text-center my-4">
-				{responseData && responseData.data && (
+			{responseData && responseData.data && (
+				<div className="w-full text-left my-4">
 					<a
 						className="text-blue-600"
 						href={responseData.data.shortUrl}
@@ -58,9 +61,9 @@ const LinkCreateForm = () => {
 					>
 						{responseData.data.shortUrl}
 					</a>
-				)}
-				{responseData && responseData.error}
-			</div>
+					{responseData && responseData.error}
+				</div>
+			)}
 		</section>
 	);
 };
