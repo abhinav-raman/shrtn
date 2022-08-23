@@ -1,6 +1,6 @@
-import { useSession, signIn, signOut } from "next-auth/react";
-export default function GoogleLogin() {
-	const { data: session } = useSession();
+import { signIn } from "next-auth/react";
+
+const GoogleLogin = () => {
 
 	return (
 		<button
@@ -11,3 +11,5 @@ export default function GoogleLogin() {
 		</button>
 	);
 }
+
+export default GoogleLogin;
