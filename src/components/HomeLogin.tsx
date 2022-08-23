@@ -1,5 +1,5 @@
 import { signOut, useSession } from "next-auth/react";
-// import GoogleLogin from "./GoogleLoginBtn";
+import GoogleLogin from "./GoogleLoginBtn";
 
 const HomeLogin = () => {
 	const { data: session } = useSession();
@@ -12,7 +12,7 @@ const HomeLogin = () => {
 					<br /> Try loggin in.
 				</h1>
 				<div className="w-full text-center mt-4">
-					{/* <GoogleLogin /> */}
+					<GoogleLogin />
 				</div>
 				<p className="w-full text-center mt-4 text-xs text-gray-600">
 					Disclaimer: Your data is safe and we dont&apos;t spam your inbox.
