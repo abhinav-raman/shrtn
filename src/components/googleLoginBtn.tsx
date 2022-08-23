@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
 
-const GoogleLogin = () => {
+const GoogleLoginBtn = () => {
 
 	return (
 		<button
@@ -12,4 +12,4 @@ const GoogleLogin = () => {
 	);
 }
 
-export default GoogleLogin;
+export default GoogleLoginBtn;
