@@ -1,26 +1,27 @@
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
-import GoogleLoginBtn from "./LoginBtn";
-
+import GoogleLoginBtn from "./GoogleLoginBtn";
 
 type HomeLoginProps = {
-  userData: Session | null
-}
+	userData: Session | null;
+};
 
 const HomeLogin = ({ userData }: HomeLoginProps) => {
 	if (!userData) {
 		return (
-			<section className="w-1/2 flex justify-center flex-col p-4">
-				<h1 className="w-full text-center text-2xl mb-4">
-					You know you can save your links?
-					<br /> Try loggin in.
-				</h1>
-				<div className="w-full text-center mt-4">
-					<GoogleLoginBtn />
+			<section className="w-1/2 flex justify-center items-end flex-col p-4">
+				<div className="w-max flex items-end flex-col">
+					<h1 className="w-full text-right text-2xl mb-4">
+						You know you can save your links?
+						<br /> Try Logging In
+					</h1>
+					<div className="text-right mt-4">
+						<GoogleLoginBtn />
+					</div>
+					<p className="text-right mt-4 text-xs text-gray-600">
+						Disclaimer: Your data is safe and we dont&apos;t spam your inbox.
+					</p>
 				</div>
-				<p className="w-full text-center mt-4 text-xs text-gray-600">
-					Disclaimer: Your data is safe and we dont&apos;t spam your inbox.
-				</p>
 			</section>
 		);
 	}
