@@ -2,6 +2,7 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import GoogleLoginBtn from "./LoginBtn";
 
+
 type HomeLoginProps = {
   userData: Session | null
 }
