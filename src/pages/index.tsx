@@ -35,7 +35,7 @@ const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<main className="flex justify-center p-4 h-[calc(80vh-4rem)]">
+			<main className="flex justify-center p-4 h-[calc(80vh-6rem)]">
 				<HomeLogin userData={userData} />
 				<span className="w-[4px] mx-8 bg-gray-600 h-3/5 mt-[10%] rounded"></span>
 				<LinkCreateForm />
