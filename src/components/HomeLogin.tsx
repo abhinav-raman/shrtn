@@ -1,11 +1,10 @@
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
-import GoogleLoginBtn from "./LoginBtn";
-
+import GoogleLoginBtn from "./GoogleLoginBtn";
 
 type HomeLoginProps = {
-  userData: Session | null
-}
+	userData: Session | null;
+};
 
 const HomeLogin = ({ userData }: HomeLoginProps) => {
 	if (!userData) {
