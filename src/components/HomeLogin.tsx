@@ -1,5 +1,5 @@
 import { Session } from "next-auth";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
 type HomeLoginProps = {
@@ -7,8 +7,6 @@ type HomeLoginProps = {
 }
 
 const HomeLogin = ({ userData }: HomeLoginProps) => {
-	// const { data: session } = useSession();
-
 	if (!userData) {
 		return (
 			<section className="w-1/2 flex justify-center flex-col p-4">
