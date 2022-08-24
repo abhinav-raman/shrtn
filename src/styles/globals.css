@@ -13,6 +13,13 @@ hmtl, body, #__next {
   min-height: 100vh;
 }
 
+#__next {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
 a {
   color: inherit;
   text-decoration: none;
