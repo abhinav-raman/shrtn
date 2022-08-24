@@ -19,7 +19,7 @@ const LinkCreateForm = () => {
 	return (
 		<section className="w-1/2 flex justify-center flex-col p-4">
 			<div className="w-full flex my-2">
-				<p className="pr-2 py-1">
+				<p className="pr-2 py-1 font-medium">
 					{(process.env.NODE_ENV === "development"
 						? "localhost:3000"
 						: "http://shrt-en.vercel.app") + "/ "}
@@ -33,7 +33,7 @@ const LinkCreateForm = () => {
 				/>
 			</div>
 			<div className="w-full flex my-2">
-				<p className="pr-2 py-1">Link</p>
+				<p className="pr-2 py-1 font-medium">Link</p>
 				<input
 					name="link"
 					value={enteredUserLink}
@@ -61,6 +61,10 @@ const LinkCreateForm = () => {
 					>
 						{responseData.data.shortUrl}
 					</a>
+				</div>
+			)}
+			{responseData && responseData.error && (
+				<div className="w-full text-left my-4">
 					{responseData && responseData.error}
 				</div>
 			)}

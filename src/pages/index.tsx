@@ -3,6 +3,7 @@ import type {
 	GetServerSidePropsContext,
 	NextPage,
 } from "next";
+import { Session } from "next-auth";
 import { getSession, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import HomeLogin from "../components/HomeLogin";
@@ -19,7 +20,11 @@ export const getServerSideProps: GetServerSideProps = async (
 	};
 };
 
-const Home: NextPage = ({ userData }: any) => {
+type HomeProps = {
+	userData: Session | null;
+};
+
+const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 	const { data: session } = useSession();
 
 	return (
@@ -31,7 +36,7 @@ const Home: NextPage = ({ userData }: any) => {
 			</Head>
 
 			<main className="flex justify-center p-4 h-[calc(80vh-4rem)]">
-				<HomeLogin />
+				<HomeLogin userData={userData} />
 				<span className="w-[4px] mx-8 bg-gray-600 h-3/5 mt-[10%] rounded"></span>
 				<LinkCreateForm />
 			</main>

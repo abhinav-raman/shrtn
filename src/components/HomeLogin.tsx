@@ -1,7 +1,12 @@
+import { Session } from "next-auth";
 import { signOut, useSession } from "next-auth/react";
-// import GoogleLogin from "./GoogleLoginBtn";
+import GoogleLoginBtn from "./GoogleLoginBtn";
 
-const HomeLogin = () => {
+type HomeLoginProps = {
+  userData: Session | null
+}
+
+const HomeLogin = ({ userData }: HomeLoginProps) => {
 	const { data: session } = useSession();
 
 	if (!session) {
@@ -12,7 +17,7 @@ const HomeLogin = () => {
 					<br /> Try loggin in.
 				</h1>
 				<div className="w-full text-center mt-4">
-					{/* <GoogleLogin /> */}
+					<GoogleLoginBtn />
 				</div>
 				<p className="w-full text-center mt-4 text-xs text-gray-600">
 					Disclaimer: Your data is safe and we dont&apos;t spam your inbox.
