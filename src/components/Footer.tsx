@@ -4,7 +4,7 @@ const Footer = () => {
 	return (
 		<footer className="w-full h-20">
 			<h4 className="w-full text-center text-base">
-				Made with &#10084; by Abhinav
+				Made with &#10084; by Abhinav<sup>&#169;</sup> 2022
 				<br />
 				<Link href={"https://github.com/abhinav-raman"} target="_blank">
 					Github
