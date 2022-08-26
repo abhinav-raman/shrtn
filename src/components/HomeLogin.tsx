@@ -13,7 +13,7 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 	if (!userData) {
 		return (
 			<section
-				className={`flex justify-center flex-col p-4 transition-all hover:w-4/5`}
+				className={`w-1/2 flex justify-center flex-col p-4 transition-all hover:w-4/5`}
 			>
 				<div className="w-max flex items-end flex-col">
 					<h1 className="w-full text-right text-2xl mb-4">
