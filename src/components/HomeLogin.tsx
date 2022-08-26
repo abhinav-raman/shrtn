@@ -1,5 +1,6 @@
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import GoogleLoginBtn from "./GoogleLoginBtn";
 
 type HomeLoginProps = {
@@ -7,6 +8,8 @@ type HomeLoginProps = {
 };
 
 const HomeLogin = ({ userData }: HomeLoginProps) => {
+	const router = useRouter();
+
 	if (!userData) {
 		return (
 			<section className="w-1/2 flex justify-center items-end flex-col p-4">
@@ -31,7 +34,10 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 			<h1 className="w-full text-right text-4xl my-2">{userData.user?.name}</h1>
 			<h3 className="w-full text-right text-xl my-2">{userData.user?.email}</h3>
 			<div className="w-full text-right mt-4 mb-4">
-				<button className="bg-gradient-to-r from-violet-800 to-blue-800 text-white rounded py-1 px-3 mr-4">
+				<button
+					className="bg-gradient-to-r from-violet-800 to-blue-800 text-white rounded py-1 px-3 mr-4"
+					onClick={() => router.push("/account")}
+				>
 					Manage Account
 				</button>
 				<button
