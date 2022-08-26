@@ -17,7 +17,9 @@ const LinkCreateForm = () => {
 		console.log(result);
 	};
 	return (
-		<section className="w-1/2 flex justify-center flex-col p-4">
+		<section
+			className={`w-1/2 flex justify-center flex-col p-4 transition-all hover:w-4/5`}
+		>
 			<div className="w-full flex my-2">
 				<p className="pr-2 py-1 font-medium">
 					{(process.env.NODE_ENV === "development"
@@ -25,6 +27,7 @@ const LinkCreateForm = () => {
 						: "http://shrt-en.vercel.app") + "/ "}
 				</p>
 				<input
+					autoComplete="off"
 					name="slug"
 					value={enteredSlug}
 					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
@@ -35,6 +38,7 @@ const LinkCreateForm = () => {
 			<div className="w-full flex my-2">
 				<p className="pr-2 py-1 font-medium">Link</p>
 				<input
+					autoComplete="off"
 					name="link"
 					value={enteredUserLink}
 					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
