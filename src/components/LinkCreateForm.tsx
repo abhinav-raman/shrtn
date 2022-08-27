@@ -18,7 +18,7 @@ const LinkCreateForm = () => {
 	};
 	return (
 		<section
-			className={`w-1/2 flex justify-center flex-col p-4 transition-all hover:w-4/5`}
+			className={`w-1/2 flex justify-center flex-col p-4 transition-width duration-300 ease-out hover:w-4/5`}
 		>
 			<div className="w-full flex my-2">
 				<p className="pr-2 py-1 font-medium">
