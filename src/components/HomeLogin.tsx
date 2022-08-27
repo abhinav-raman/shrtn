@@ -15,8 +15,8 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 			<section
 				className={`w-1/2 flex justify-center flex-col p-4 transition-width duration-300 ease-out hover:w-4/5`}
 			>
-				<div className="w-max flex items-end flex-col">
-					<h1 className="w-full text-right text-2xl mb-4">
+				<div className="w-full flex items-end flex-col">
+					<h1 className="w-full text-right text-2xl mb-4 font-medium">
 						You know you can save your links?
 						<br /> Try Logging In
 					</h1>

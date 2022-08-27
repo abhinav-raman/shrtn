@@ -9,6 +9,9 @@ module.exports = {
 			transitionProperty: {
 				width: "width",
 			},
+      fontFamily: {
+        josefin: ["Josefin Sans", "sans-serif"],
+      }
 		},
 	},
 	plugins: [],
