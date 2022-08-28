@@ -5,7 +5,14 @@ module.exports = {
 		"./src/components/**/*.{js,ts,jsx,tsx}",
 	],
 	theme: {
-		extend: {},
+		extend: {
+			transitionProperty: {
+				width: "width",
+			},
+      fontFamily: {
+        josefin: ["Josefin Sans", "sans-serif"],
+      }
+		},
 	},
 	plugins: [],
 };
