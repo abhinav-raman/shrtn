@@ -9,6 +9,7 @@ export default async function handler(
 ) {
 	const slug = req.query["slug"];
 	const userLink = req.query["userLink"];
+	const email = req.query["email"];
 
 	console.log("slug", slug);
 	console.log("userLink", userLink);
@@ -41,6 +42,7 @@ export default async function handler(
 			createdAt: new Date(),
 			url: userLink,
 			shortUrl: `${BASE_URL}/${slug}`,
+			userEmail: `${email}`,
 		},
 	});
 
