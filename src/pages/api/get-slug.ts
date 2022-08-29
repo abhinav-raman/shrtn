@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { prisma } from "../../../db/client";
+import { prisma } from "../../db/client";
 
 export default async function handler(
 	req: NextApiRequest,
@@ -24,8 +24,6 @@ export default async function handler(
 			.status(404)
 			.json({ status: 404, error: "Please enter valid slug." });
 	}
-
-	console.log("data in BE", data);
 
 	return res
 		.status(200)

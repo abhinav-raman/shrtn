@@ -1,13 +1,20 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
+import { debounce } from "ts-debounce";
+
+const checkIfSlugExists = async (slug: string) => {
+	const response = await (await fetch(`/api/get-slug?slug=${slug}`)).json();
+	return response;
+};
+
 const LinkCreateForm = () => {
 	const { data } = useSession();
 
 	const [enteredUserLink, setEnteredUserLink] = useState("");
 	const [enteredSlug, setEnteredSlug] = useState("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
-	const [areInputsFocused, setAreInputsFocused] = useState(false);
+	const [slugInvalidMsg, setSlugInvalidMsg] = useState("");
 
 	const createShortLink = async () => {
 		console.log(enteredUserLink, enteredSlug);
@@ -20,11 +27,14 @@ const LinkCreateForm = () => {
 		setResponseData(result);
 		console.log(result);
 	};
+
+	const debouncedGetLinkWithSLug = debounce(() => {
+		console.log("calling get slug api");
+	}, 1000);
+
 	return (
 		<section
-			className={`w-1/2 pl-8 flex justify-center flex-col p-4 transition-width duration-300 ease-out hover:w-4/5 ${
-				areInputsFocused ? "w-4/5" : ""
-			}`}
+			className={`w-1/2 pl-8 flex justify-center flex-col p-4 transition-width duration-300 ease-out`}
 		>
 			<div className="w-full flex my-2">
 				<p className="pr-2 py-1 font-medium">
@@ -38,9 +48,16 @@ const LinkCreateForm = () => {
 					value={enteredSlug}
 					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
 					placeholder="Choose a slug"
-					onChange={({ target }) => setEnteredSlug(target.value)}
-					onFocus={() => setAreInputsFocused(true)}
-					onBlur={() => setAreInputsFocused(false)}
+					onChange={async ({ target }) => {
+						setEnteredSlug(target.value);
+						setSlugInvalidMsg("");
+						const response = await checkIfSlugExists(target.value);
+
+						if (response.data) {
+							setSlugInvalidMsg("Slug already exists");
+						}
+						console.log(response);
+					}}
 				/>
 			</div>
 			<div className="w-full flex my-2">
@@ -52,8 +69,6 @@ const LinkCreateForm = () => {
 					className="outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-[3px] focus:outline-teal-600"
 					placeholder="Enter a link"
 					onChange={({ target }) => setEnteredUserLink(target.value)}
-					onFocus={() => setAreInputsFocused(true)}
-					onBlur={() => setAreInputsFocused(false)}
 				/>
 			</div>
 			<div className="w-full text-left my-4">
@@ -77,10 +92,8 @@ const LinkCreateForm = () => {
 					</a>
 				</div>
 			)}
-			{responseData && responseData.error && (
-				<div className="w-full text-left my-4">
-					{responseData && responseData.error}
-				</div>
+			{slugInvalidMsg.length > 0 && (
+				<div className="w-full text-left my-4">{slugInvalidMsg}</div>
 			)}
 		</section>
 	);
