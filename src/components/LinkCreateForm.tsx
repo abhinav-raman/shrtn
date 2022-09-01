@@ -25,7 +25,6 @@ const LinkCreateForm = () => {
 			)
 		).json();
 		setResponseData(result);
-		console.log(result);
 	};
 
 	const debouncedGetLinkWithSLug = debounce(() => {
@@ -50,13 +49,16 @@ const LinkCreateForm = () => {
 					placeholder="Choose a slug"
 					onChange={async ({ target }) => {
 						setEnteredSlug(target.value);
+						if (target.value.length <= 3) {
+							setSlugInvalidMsg("Slug must be atleast 4 characters long");
+              return
+						}
 						setSlugInvalidMsg("");
 						const response = await checkIfSlugExists(target.value);
 
 						if (response.data) {
 							setSlugInvalidMsg("Slug already exists");
 						}
-						console.log(response);
 					}}
 				/>
 			</div>
