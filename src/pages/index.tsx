@@ -9,6 +9,7 @@ import Head from "next/head";
 import { useContext } from "react";
 import HomeLogin from "../components/HomeLogin";
 import LinkCreateForm from "../components/LinkCreateForm";
+import ThemeSwitcher from "../components/ThemeSwitcher";
 import { ThemeContext } from "../context/ThemeContext";
 
 export const getServerSideProps: GetServerSideProps = async (
@@ -39,6 +40,7 @@ const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 			</Head>
 
 			<main className="flex w-full justify-center p-4 h-[calc(60vh-6rem)]">
+        <ThemeSwitcher />
 				<HomeLogin userData={userData} />
 				<span className="w-[4px] bg-gray-600 h-full rounded"></span>
 				<LinkCreateForm />

@@ -15,12 +15,12 @@ hmtl,
 body,
 #__next {
 	min-height: 100vh;
+  @apply antialiased
 }
 
-body .dark {
+html > .dark {
   @apply bg-black/95 text-gray-100;
 }
-
 
 #__next {
 	display: flex;
