@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BASE_URL } from "../../constants/url";
+import { BASE_URL } from "../../utils/constants";
 
 import { prisma } from "../../db/client";
 
