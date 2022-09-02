@@ -16,13 +16,28 @@ export const ThemeContextProvider = ({ children }: any) => {
 
 	useEffect(() => {
 		bodyRef.current = document.querySelector("body");
+
+		const localTheme = localStorage.getItem("user-selected-theme");
+		if (localTheme) {
+			setTheme(localTheme);
+			bodyRef.current?.classList.add(localTheme);
+		}
 	}, []);
 
 	const toggleThemeHandler = () => {
-		setTheme((prevTheme) =>
-			prevTheme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT
-		);
-		bodyRef.current?.classList.toggle("dark");
+		setTheme((prevTheme) => {
+			if (prevTheme === THEMES.LIGHT) {
+				bodyRef.current?.classList.remove(THEMES.LIGHT);
+				bodyRef.current?.classList.add(THEMES.DARK);
+				localStorage.setItem("user-selected-theme", THEMES.DARK);
+				return THEMES.DARK;
+			}
+
+			bodyRef.current?.classList.remove(THEMES.DARK);
+			bodyRef.current?.classList.add(THEMES.LIGHT);
+			localStorage.setItem("user-selected-theme", THEMES.LIGHT);
+			return THEMES.LIGHT;
+		});
 	};
 
 	return (
