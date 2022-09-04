@@ -42,7 +42,7 @@ const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 			<main className="flex w-full justify-center p-4 h-[calc(60vh-6rem)]">
         <ThemeSwitcher />
 				<HomeLogin userData={userData} />
-				<span className="w-[4px] bg-gray-600 h-full rounded"></span>
+				<span className="border-l border-l-gray-600 h-full rounded"></span>
 				<LinkCreateForm />
 			</main>
 		</>

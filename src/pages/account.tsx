@@ -8,6 +8,7 @@ import { API_SUCCESS, BASE_URL } from "../utils/constants";
 import deleteIcon from "../assets/images/delete-icon.png";
 import { useEffect, useRef, useState } from "react";
 import Popup from "reactjs-popup";
+import ThemeSwitcher from "../components/ThemeSwitcher";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
@@ -106,8 +107,10 @@ const Account = ({ data, user, error }: AccountProps) => {
 
 	return (
 		<main className="w-full text-center">
-			<h1 className="font-bold text-3xl">{user.name}</h1>
-			<h2 className="font-thin text-2xl">{user.email}</h2>
+			<ThemeSwitcher />
+
+			<h1 className="text-4xl font-medium">{user.name}</h1>
+			<h2 className="text-xl font-extralight">{user.email}</h2>
 
 			{error && (
 				<section className="w-full px-[15%] min-h-[20rem] flex justify-center items-center font-extralight">
@@ -165,19 +168,19 @@ const Account = ({ data, user, error }: AccountProps) => {
 											closeOnEscape
 											lockScroll
 										>
-											<div className="border border-gray-600 rounded-lg bg-white">
+											<div className="border border-gray-600 dark:border-gray-100 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
 												<p className="w-full p-4 text-center px-8">
 													Delete {selectedToDelete}?
 												</p>
-												<div className="w-full h-8 flex border-t border-gray-600">
+												<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-100">
 													<button
-														className="w-1/2 rounded-bl-lg transition hover:bg-gray-200"
+														className="w-1/2 rounded-bl-lg transition hover:bg-gray-200 dark:hover:bg-gray-800"
 														onClick={() => linkDeleteHandler(item.slug)}
 													>
 														Yes
 													</button>
 													<button
-														className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600"
+														className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-100 dark:hover:bg-gray-800"
 														onClick={() => {
 															setShowDeleteModal(false);
 															setSelectedToDelete(null);

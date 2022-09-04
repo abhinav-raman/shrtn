@@ -12,7 +12,7 @@ export const ThemeContext = createContext({
 
 export const ThemeContextProvider = ({ children }: any) => {
 	const bodyRef = useRef<HTMLBodyElement | null>(null);
-	const [theme, setTheme] = useState(THEMES.LIGHT);
+	const [theme, setTheme] = useState(THEMES.DARK);
 
 	useEffect(() => {
 		bodyRef.current = document.querySelector("body");
