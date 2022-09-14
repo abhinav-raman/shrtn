@@ -34,20 +34,35 @@ const LinkCreateForm = () => {
 
 	return (
 		<section className={`w-1/2 pl-8 p-4 pr-[min(10rem,10%)]`}>
+			{/* {responseData && responseData.data ? ( */}
 			{responseData && responseData.data ? (
-				<>
-					<div className="w-full text-left my-4">
-						<a
-							className="text-blue-600"
-							href={responseData.data.shortUrl}
-							target="_blank"
-							rel="noreferrer"
-						>
+				<div className="pt-16">
+					<div className="flex w-full text-left my-4">
+						<p className="font-medium text-lg leading-[34px]">
 							{responseData.data.shortUrl}
-						</a>
+						</p>
+						<button
+							className="py-1 px-3 border border-gray-400 mx-2 rounded"
+							onClick={() => window.open(responseData.data.shortUrl, "_blank")}
+						>
+							Go
+						</button>
+						<button
+							className="py-1 px-3 border border-gray-400 mr-4 rounded"
+							onClick={() =>
+								navigator.clipboard.writeText(responseData.data.shortUrl)
+							}
+						>
+							Copy
+						</button>
 					</div>
-					<button onClick={() => setResponseData(null)}>Reset</button>
-				</>
+					<button
+						className="py-1 px-3 border border-gray-400 mr-4 rounded"
+						onClick={() => setResponseData(null)}
+					>
+						Reset
+					</button>
+				</div>
 			) : (
 				<>
 					<p className="w-full text-right my-4 h-8 font-bold text-red-500 dark:text-rose-500">
@@ -94,7 +109,7 @@ const LinkCreateForm = () => {
 					</div>
 					<div className="w-full text-left my-4">
 						<button
-							className="px-3 py-1 rounded bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-500 dark:to-blue-500 text-white disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed"
+							className="px-3 py-1 rounded bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-500 dark:to-blue-500 text-white disabled:from-gray-400 disabled:to-gray-400 dark:disabled:from-gray-400 dark:disabled:to-gray-400 disabled:cursor-not-allowed"
 							onClick={createShortLink}
 							disabled={!enteredUserLink.length || enteredSlug.length < 4}
 						>

@@ -8,9 +8,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<ThemeContextProvider>
 			<SessionProvider session={session}>
-				<Layout>
+				{/* <Layout> */}
 					<Component {...pageProps} />
-				</Layout>
+				{/* </Layout> */}
 			</SessionProvider>
 		</ThemeContextProvider>
 	);
