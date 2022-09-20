@@ -1,8 +1,10 @@
 import { createContext, useEffect, useRef, useState } from "react";
 
+type ThemeType = "light" | "dark";
+
 export const THEMES = {
-	LIGHT: "light",
-	DARK: "dark",
+	LIGHT: "light" as ThemeType,
+	DARK: "dark" as ThemeType,
 };
 
 export const ThemeContext = createContext({
@@ -10,32 +12,36 @@ export const ThemeContext = createContext({
 	toggleTheme: () => {},
 });
 
+const handleThemeChangeLogic = (theme: ThemeType) => {
+	console.log(theme);
+
+	document.body.classList.remove(THEMES.LIGHT, THEMES.DARK);
+	document.body.classList.add(theme);
+	localStorage.setItem("user-selected-theme", theme);
+};
+
 export const ThemeContextProvider = ({ children }: any) => {
 	const bodyRef = useRef<HTMLBodyElement | null>(null);
-	const [theme, setTheme] = useState(THEMES.DARK);
+	const [theme, setTheme] = useState<ThemeType>(THEMES.DARK);
 
 	useEffect(() => {
 		bodyRef.current = document.querySelector("body");
-
-		const localTheme = localStorage.getItem("user-selected-theme");
-		if (localTheme) {
-			setTheme(localTheme);
-			bodyRef.current?.classList.add(localTheme);
-		}
+		const localTheme = localStorage.getItem("user-selected-theme") as ThemeType;
+		console.log("theme", localTheme);
+		setTheme(localTheme || THEMES.DARK);
+		handleThemeChangeLogic(localTheme || THEMES.DARK);
 	}, []);
 
 	const toggleThemeHandler = () => {
 		setTheme((prevTheme) => {
+			console.log(prevTheme);
+
 			if (prevTheme === THEMES.LIGHT) {
-				bodyRef.current?.classList.remove(THEMES.LIGHT);
-				bodyRef.current?.classList.add(THEMES.DARK);
-				localStorage.setItem("user-selected-theme", THEMES.DARK);
+				handleThemeChangeLogic(THEMES.DARK);
 				return THEMES.DARK;
 			}
 
-			bodyRef.current?.classList.remove(THEMES.DARK);
-			bodyRef.current?.classList.add(THEMES.LIGHT);
-			localStorage.setItem("user-selected-theme", THEMES.LIGHT);
+			handleThemeChangeLogic(THEMES.LIGHT);
 			return THEMES.LIGHT;
 		});
 	};

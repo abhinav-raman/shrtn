@@ -69,10 +69,7 @@ const LinkCreateForm = () => {
 					</p>
 					<div className="w-full flex my-2">
 						<p className="pr-2 py-1 font-medium mr-8 whitespace-nowrap">
-							{/* {(process.env.NODE_ENV === "development"
-								? "localhost:3000"
-								: "http://shrt-en.vercel.app") + "/ "} */}
-							{BASE_URL + "/ "}
+							{BASE_URL}
 						</p>
 						<input
 							autoComplete="off"
