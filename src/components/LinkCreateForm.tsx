@@ -34,7 +34,6 @@ const LinkCreateForm = () => {
 
 	return (
 		<section className={`w-1/2 pl-8 p-4 pr-[min(10rem,10%)]`}>
-			{/* {responseData && responseData.data ? ( */}
 			{responseData && responseData.data ? (
 				<div className="pt-16">
 					<div className="flex w-full text-left my-4">
@@ -69,11 +68,8 @@ const LinkCreateForm = () => {
 						{slugInvalidMsg}
 					</p>
 					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium">
-							{/* {(process.env.NODE_ENV === "development"
-								? "localhost:3000"
-								: "http://shrt-en.vercel.app") + "/ "} */}
-							{BASE_URL + "/ "}
+						<p className="pr-2 py-1 font-medium mr-8 whitespace-nowrap">
+							{BASE_URL}
 						</p>
 						<input
 							autoComplete="off"
@@ -97,7 +93,7 @@ const LinkCreateForm = () => {
 						/>
 					</div>
 					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium">Link</p>
+						<p className="pr-2 py-1 font-medium mr-8">Link</p>
 						<input
 							autoComplete="off"
 							name="link"
