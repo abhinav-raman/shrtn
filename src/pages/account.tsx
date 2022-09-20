@@ -111,8 +111,10 @@ const Account = ({ data, user, error }: AccountProps) => {
 			<main className="w-full text-center">
 				<ThemeSwitcher />
 
-				<h1 className="text-4xl font-medium">{user.name}</h1>
-				<h2 className="text-xl font-extralight">{user.email}</h2>
+				<div className="py-4">
+					<h1 className="text-4xl font-medium">{user.name}</h1>
+					<h2 className="text-xl font-extralight">{user.email}</h2>
+				</div>
 
 				{error && (
 					<section className="w-full px-[15%] min-h-[20rem] flex justify-center items-center font-extralight">
