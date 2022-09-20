@@ -112,7 +112,9 @@ const Account = ({ data, user, error }: AccountProps) => {
 				<ThemeSwitcher />
 
 				<div className="py-4">
-					<h1 className="text-4xl font-medium">{user.name}</h1>
+					<h1 className="text-4xl font-medium text-transparent bg-clip-text bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 ">
+						{user.name}
+					</h1>
 					<h2 className="text-xl font-extralight">{user.email}</h2>
 				</div>
 
@@ -148,14 +150,12 @@ const Account = ({ data, user, error }: AccountProps) => {
 										<td className="text-left py-2 pr-8 w-1/6">
 											{new Date(item.createdAt).toDateString()}
 										</td>
-										<td className="text-left py-2 pr-8 w-2/6">
-											{item.shortUrl}
-										</td>
-										<td className="text-left py-2 w-2/6 font-semibold hover:text-teal-600">
-											<a href={item.url} target="_blank" rel="noreferrer">
-												{item.url}
+										<td className="bg-gradient-to-r text-left py-2 pr-8 w-2/6 font-semibold bg-black dark:bg-gray-100 hover:from-violet-800 hover:to-blue-800 dark:hover:from-violet-400 dark:hover:to-blue-400 text-transparent bg-clip-text">
+											<a href={item.shortUrl} target="_blank" rel="noreferrer">
+												{item.shortUrl}
 											</a>
 										</td>
+										<td className="text-left py-2 w-2/6">{item.url}</td>
 										<td className="aspect-square p-1">
 											<div
 												className="relative w-6 aspect-square cursor-pointer"
