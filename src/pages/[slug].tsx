@@ -26,14 +26,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	if (slug) {
 		const slugData = await (
 			await fetch(
-				`${BASE_URL}/api/get-slug-with-email?email=${session.user.email}`
+				`${BASE_URL}/api/get-slug?slug=${slug}`
 			)
 		).json();
     console.log(slugData);
     
 		return {
 			redirect: {
-				destination: slugData.data[0].url,
+				destination: slugData.data.url,
 				permanent: true,
 			},
 		};
