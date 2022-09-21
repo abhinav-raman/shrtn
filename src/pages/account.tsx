@@ -21,7 +21,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	if (session && session.user && session.user.email) {
 		const slugData = await (
 			await fetch(
-				`${BASE_URL}/api/get-slug-with-email?email=${session.user.email}`
+				`${BASE_URL}/api/get-account-data-with-email?email=${session.user.email}`
 			)
 		).json();
 
