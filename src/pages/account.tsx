@@ -104,7 +104,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 	return (
 		<>
 			<Head>
-				<title>Shrt-en | {user.name}</title>
+				<title>Shrtn | {user.name}</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
