@@ -6,13 +6,11 @@ import type {
 import { Session } from "next-auth";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import { useContext } from "react";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HomeLogin from "../components/HomeLogin";
 import LinkCreateForm from "../components/LinkCreateForm";
 import ThemeSwitcher from "../components/ThemeSwitcher";
-import { ThemeContext } from "../context/ThemeContext";
 
 export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
@@ -33,7 +31,7 @@ const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 	return (
 		<>
 			<Head>
-				<title>Shrt-en</title>
+				<title>Shrtn</title>
 				<meta name="description" content="Shorten your links, fast and easy" />
 				<link rel="icon" href="favicon.ico" />
 				<link
