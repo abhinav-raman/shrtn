@@ -39,7 +39,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 			return {
 				props: {
 					data: [],
-					error: new Error("Cannot find data.", { cause: err }),
+					error: JSON.stringify(err),
 				},
 			};
 		}
