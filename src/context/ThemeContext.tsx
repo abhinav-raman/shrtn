@@ -13,8 +13,6 @@ export const ThemeContext = createContext({
 });
 
 const handleThemeChangeLogic = (theme: ThemeType) => {
-	console.log(theme);
-
 	document.body.classList.remove(THEMES.LIGHT, THEMES.DARK);
 	document.body.classList.add(theme);
 	localStorage.setItem("user-selected-theme", theme);
@@ -34,8 +32,6 @@ export const ThemeContextProvider = ({ children }: any) => {
 
 	const toggleThemeHandler = () => {
 		setTheme((prevTheme) => {
-			console.log(prevTheme);
-
 			if (prevTheme === THEMES.LIGHT) {
 				handleThemeChangeLogic(THEMES.DARK);
 				return THEMES.DARK;

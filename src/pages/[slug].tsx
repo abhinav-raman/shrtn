@@ -1,7 +1,5 @@
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 import { authOptions } from "./api/auth/[...nextauth]";
 

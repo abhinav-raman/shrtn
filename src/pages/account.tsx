@@ -1,39 +1,48 @@
-import Image from "next/image";
-import next, { GetServerSidePropsContext } from "next";
+import { useEffect, useRef, useState } from "react";
+import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
+import Image from "next/image";
+import Head from "next/head";
+import Popup from "reactjs-popup";
 
 import { authOptions } from "./api/auth/[...nextauth]";
 import { API_SUCCESS, BASE_URL } from "../utils/constants";
 
-import deleteIcon from "../assets/images/delete-icon.png";
-import { useEffect, useRef, useState } from "react";
-import Popup from "reactjs-popup";
+import { prisma } from "../db/client";
 import ThemeSwitcher from "../components/ThemeSwitcher";
-import Head from "next/head";
+import deleteIcon from "../assets/images/delete-icon.png";
 import Footer from "../components/Footer";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
-
 	const session = await unstable_getServerSession(req, res, authOptions);
-	console.log(session);
 
 	if (session && session.user && session.user.email) {
-		const slugData = await (
-			await fetch(
-				`${BASE_URL}/api/get-account-data-with-email?email=${session.user.email}`
-			)
-		).json();
-
-		return {
-			props: {
-				data: slugData.data,
-				user: {
-					name: session.user.name,
-					email: session.user.email,
+		try {
+			const data = await prisma.shortLink.findMany({
+				where: {
+					userEmail: {
+						equals: session.user.email,
+					},
 				},
-			},
-		};
+			});
+			return {
+				props: {
+					data: JSON.parse(JSON.stringify(data)),
+					user: {
+						name: session.user.name,
+						email: session.user.email,
+					},
+				},
+			};
+		} catch (err) {
+			return {
+				props: {
+					data: [],
+					error: new Error("Cannot find data.", { cause: err }),
+				},
+			};
+		}
 	}
 
 	return {

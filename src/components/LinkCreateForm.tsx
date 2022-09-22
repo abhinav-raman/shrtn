@@ -4,10 +4,10 @@ import { useState } from "react";
 import { debounce } from "ts-debounce";
 import { BASE_URL } from "../utils/constants";
 
-const checkIfSlugExists = async (slug: string) => {
+const checkIfSlugExists = debounce(async (slug: string) => {
 	const response = await (await fetch(`/api/get-slug?slug=${slug}`)).json();
 	return response;
-};
+}, 400);
 
 const LinkCreateForm = () => {
 	const { data } = useSession();
@@ -27,10 +27,6 @@ const LinkCreateForm = () => {
 		).json();
 		setResponseData(result);
 	};
-
-	const debouncedGetLinkWithSLug = debounce(() => {
-		console.log("calling get slug api");
-	}, 1000);
 
 	return (
 		<section className={`w-1/2 pl-8 p-4 pr-[min(10rem,10%)]`}>
@@ -80,7 +76,7 @@ const LinkCreateForm = () => {
 							name="slug"
 							type="string"
 							value={enteredSlug as string}
-							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px]   focus:outline-violet-600"
+							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-violet-600"
 							placeholder="Choose a slug"
 							onChange={async ({ target }) => {
 								setEnteredSlug(target.value);
