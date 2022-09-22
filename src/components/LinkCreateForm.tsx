@@ -12,10 +12,10 @@ const checkIfSlugExists = async (slug: string) => {
 const LinkCreateForm = () => {
 	const { data } = useSession();
 
-	const [enteredUserLink, setEnteredUserLink] = useState("");
-	const [enteredSlug, setEnteredSlug] = useState("");
+	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
+	const [enteredSlug, setEnteredSlug] = useState<String>("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
-	const [slugInvalidMsg, setSlugInvalidMsg] = useState("");
+	const [slugInvalidMsg, setSlugInvalidMsg] = useState<String>("");
 
 	const createShortLink = async () => {
 		console.log(enteredUserLink, enteredSlug);
@@ -57,7 +57,11 @@ const LinkCreateForm = () => {
 					</div>
 					<button
 						className="py-1 px-3 border border-gray-400 mr-4 rounded"
-						onClick={() => setResponseData(null)}
+						onClick={() => {
+							setResponseData(null);
+							setEnteredSlug("");
+							setEnteredUserLink("");
+						}}
 					>
 						Reset
 					</button>
@@ -74,11 +78,16 @@ const LinkCreateForm = () => {
 						<input
 							autoComplete="off"
 							name="slug"
-							value={enteredSlug}
+							type="string"
+							value={enteredSlug as string}
 							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px]   focus:outline-violet-600"
 							placeholder="Choose a slug"
 							onChange={async ({ target }) => {
 								setEnteredSlug(target.value);
+								if (target.value.length === 0) {
+									setSlugInvalidMsg("");
+									return;
+								}
 								if (target.value.length <= 3) {
 									setSlugInvalidMsg("Slug must be atleast 4 characters long");
 									return;
@@ -97,7 +106,7 @@ const LinkCreateForm = () => {
 						<input
 							autoComplete="off"
 							name="link"
-							value={enteredUserLink}
+							value={enteredUserLink as string}
 							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-violet-600"
 							placeholder="Enter a link"
 							onChange={({ target }) => setEnteredUserLink(target.value)}

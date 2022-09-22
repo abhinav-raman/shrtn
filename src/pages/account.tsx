@@ -175,11 +175,11 @@ const Account = ({ data, user, error }: AccountProps) => {
 												closeOnEscape
 												lockScroll
 											>
-												<div className="border border-gray-600 dark:border-gray-100 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+												<div className="border border-gray-600 dark:border-gray-600 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
 													<p className="w-full p-4 text-center px-8">
 														Delete {selectedToDelete}?
 													</p>
-													<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-100">
+													<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-600">
 														<button
 															className="w-1/2 rounded-bl-lg transition hover:bg-gray-200 dark:hover:bg-gray-800"
 															onClick={() => linkDeleteHandler(item.slug)}
@@ -187,7 +187,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 															Yes
 														</button>
 														<button
-															className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-100 dark:hover:bg-gray-800"
+															className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-600 dark:hover:bg-gray-800"
 															onClick={() => {
 																setShowDeleteModal(false);
 																setSelectedToDelete(null);
