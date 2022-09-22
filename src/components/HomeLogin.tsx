@@ -12,16 +12,16 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 
 	if (!userData) {
 		return (
-			<section className={`w-1/2 pr-8 pt-[64px] p-4`}>
-				<div className="w-full flex items-end flex-col">
-					<h1 className="w-full text-right text-2xl mb-4 font-medium">
+			<section className={`w-full pr-8 pt-[64px] p-4 md:w-1/2`}>
+				<div className="w-full flex items-center flex-col md:items-end">
+					<h1 className="w-full text-center text-2xl mb-4 font-medium md:text-right">
 						You know you can manage your links?
 						<br /> Try Logging In
 					</h1>
-					<div className="text-right mt-4">
+					<div className="text-center mt-4">
 						<GoogleLoginBtn />
 					</div>
-					<p className="text-right mt-4 text-xs text-gray-600">
+					<p className="text-center mt-4 text-xs text-gray-600">
 						Disclaimer: Your data is safe and we dont&apos;t spam your inbox.
 					</p>
 				</div>

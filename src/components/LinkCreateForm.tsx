@@ -29,7 +29,7 @@ const LinkCreateForm = () => {
 	};
 
 	return (
-		<section className={`w-1/2 pl-8 p-4 pr-[min(10rem,10%)]`}>
+		<section className={`w-full pl-8 p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)]`}>
 			{responseData && responseData.data ? (
 				<div className="pt-16">
 					<div className="flex w-full text-left my-4">
@@ -64,11 +64,11 @@ const LinkCreateForm = () => {
 				</div>
 			) : (
 				<>
-					<p className="w-full text-right my-4 h-8 font-bold text-red-500 dark:text-rose-500">
+					<p className="w-full text-right h-8 font-bold text-red-500 dark:text-rose-500 md:my-4">
 						{slugInvalidMsg}
 					</p>
-					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium mr-8 whitespace-nowrap">
+					<div className="w-full flex flex-col my-2 md:flex-row">
+						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0 whitespace-nowrap">
 							{BASE_URL}
 						</p>
 						<input
@@ -97,8 +97,8 @@ const LinkCreateForm = () => {
 							}}
 						/>
 					</div>
-					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium mr-8">Link</p>
+					<div className="w-full flex flex-col my-2 md:flex-row">
+						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0">Link</p>
 						<input
 							autoComplete="off"
 							name="link"
