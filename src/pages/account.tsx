@@ -1,39 +1,48 @@
-import Image from "next/image";
-import next, { GetServerSidePropsContext } from "next";
+import { useEffect, useRef, useState } from "react";
+import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
+import Image from "next/image";
+import Head from "next/head";
+import Popup from "reactjs-popup";
 
 import { authOptions } from "./api/auth/[...nextauth]";
 import { API_SUCCESS, BASE_URL } from "../utils/constants";
 
-import deleteIcon from "../assets/images/delete-icon.png";
-import { useEffect, useRef, useState } from "react";
-import Popup from "reactjs-popup";
+import { prisma } from "../db/client";
 import ThemeSwitcher from "../components/ThemeSwitcher";
-import Head from "next/head";
+import deleteIcon from "../assets/images/delete-icon.png";
 import Footer from "../components/Footer";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
-
 	const session = await unstable_getServerSession(req, res, authOptions);
-	console.log(session);
 
 	if (session && session.user && session.user.email) {
-		const slugData = await (
-			await fetch(
-				`${BASE_URL}/api/get-account-data-with-email?email=${session.user.email}`
-			)
-		).json();
-
-		return {
-			props: {
-				data: slugData.data,
-				user: {
-					name: session.user.name,
-					email: session.user.email,
+		try {
+			const data = await prisma.shortLink.findMany({
+				where: {
+					userEmail: {
+						equals: session.user.email,
+					},
 				},
-			},
-		};
+			});
+			return {
+				props: {
+					data: JSON.parse(JSON.stringify(data)),
+					user: {
+						name: session.user.name,
+						email: session.user.email,
+					},
+				},
+			};
+		} catch (err) {
+			return {
+				props: {
+					data: [],
+					error: JSON.stringify(err),
+				},
+			};
+		}
 	}
 
 	return {
@@ -175,11 +184,11 @@ const Account = ({ data, user, error }: AccountProps) => {
 												closeOnEscape
 												lockScroll
 											>
-												<div className="border border-gray-600 dark:border-gray-100 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+												<div className="border border-gray-600 dark:border-gray-600 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
 													<p className="w-full p-4 text-center px-8">
 														Delete {selectedToDelete}?
 													</p>
-													<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-100">
+													<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-600">
 														<button
 															className="w-1/2 rounded-bl-lg transition hover:bg-gray-200 dark:hover:bg-gray-800"
 															onClick={() => linkDeleteHandler(item.slug)}
@@ -187,7 +196,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 															Yes
 														</button>
 														<button
-															className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-100 dark:hover:bg-gray-800"
+															className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-600 dark:hover:bg-gray-800"
 															onClick={() => {
 																setShowDeleteModal(false);
 																setSelectedToDelete(null);

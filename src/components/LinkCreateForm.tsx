@@ -4,18 +4,18 @@ import { useState } from "react";
 import { debounce } from "ts-debounce";
 import { BASE_URL } from "../utils/constants";
 
-const checkIfSlugExists = async (slug: string) => {
+const checkIfSlugExists = debounce(async (slug: string) => {
 	const response = await (await fetch(`/api/get-slug?slug=${slug}`)).json();
 	return response;
-};
+}, 400);
 
 const LinkCreateForm = () => {
 	const { data } = useSession();
 
-	const [enteredUserLink, setEnteredUserLink] = useState("");
-	const [enteredSlug, setEnteredSlug] = useState("");
+	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
+	const [enteredSlug, setEnteredSlug] = useState<String>("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
-	const [slugInvalidMsg, setSlugInvalidMsg] = useState("");
+	const [slugInvalidMsg, setSlugInvalidMsg] = useState<String>("");
 
 	const createShortLink = async () => {
 		console.log(enteredUserLink, enteredSlug);
@@ -28,12 +28,8 @@ const LinkCreateForm = () => {
 		setResponseData(result);
 	};
 
-	const debouncedGetLinkWithSLug = debounce(() => {
-		console.log("calling get slug api");
-	}, 1000);
-
 	return (
-		<section className={`w-1/2 pl-8 p-4 pr-[min(10rem,10%)]`}>
+		<section className={`w-full pl-8 p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)]`}>
 			{responseData && responseData.data ? (
 				<div className="pt-16">
 					<div className="flex w-full text-left my-4">
@@ -57,28 +53,37 @@ const LinkCreateForm = () => {
 					</div>
 					<button
 						className="py-1 px-3 border border-gray-400 mr-4 rounded"
-						onClick={() => setResponseData(null)}
+						onClick={() => {
+							setResponseData(null);
+							setEnteredSlug("");
+							setEnteredUserLink("");
+						}}
 					>
 						Reset
 					</button>
 				</div>
 			) : (
 				<>
-					<p className="w-full text-right my-4 h-8 font-bold text-red-500 dark:text-rose-500">
+					<p className="w-full text-right h-8 font-bold text-red-500 dark:text-rose-500 md:my-4">
 						{slugInvalidMsg}
 					</p>
-					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium mr-8 whitespace-nowrap">
+					<div className="w-full flex flex-col my-2 md:flex-row">
+						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0 whitespace-nowrap">
 							{BASE_URL}
 						</p>
 						<input
 							autoComplete="off"
 							name="slug"
-							value={enteredSlug}
-							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px]   focus:outline-violet-600"
+							type="string"
+							value={enteredSlug as string}
+							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-violet-600"
 							placeholder="Choose a slug"
 							onChange={async ({ target }) => {
 								setEnteredSlug(target.value);
+								if (target.value.length === 0) {
+									setSlugInvalidMsg("");
+									return;
+								}
 								if (target.value.length <= 3) {
 									setSlugInvalidMsg("Slug must be atleast 4 characters long");
 									return;
@@ -92,12 +97,12 @@ const LinkCreateForm = () => {
 							}}
 						/>
 					</div>
-					<div className="w-full flex my-2">
-						<p className="pr-2 py-1 font-medium mr-8">Link</p>
+					<div className="w-full flex flex-col my-2 md:flex-row">
+						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0">Link</p>
 						<input
 							autoComplete="off"
 							name="link"
-							value={enteredUserLink}
+							value={enteredUserLink as string}
 							className="w-full dark:text-black outline outline-2 outline-gray-400 rounded px-2 py-[2px] focus:outline-violet-600"
 							placeholder="Enter a link"
 							onChange={({ target }) => setEnteredUserLink(target.value)}

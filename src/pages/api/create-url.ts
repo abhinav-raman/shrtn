@@ -41,7 +41,7 @@ export default async function handler(
 			slug: slug,
 			createdAt: new Date(),
 			url: userLink,
-			shortUrl: `${BASE_URL}/${slug}`,
+			shortUrl: `${BASE_URL}${slug}`,
 			userEmail: `${email}`,
 		},
 	});
