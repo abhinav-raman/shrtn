@@ -5,7 +5,7 @@ const Header = () => {
 				<span className="font-bold bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text">
 					Shrtn{" "}
 				</span>
-				<span className="font-extralight">your links</span>
+				<span className="font-extralight hidden md:inline">your links</span>
 			</h1>
 		</header>
 	);

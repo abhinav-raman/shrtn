@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 
 import { debounce } from "ts-debounce";
@@ -14,7 +15,9 @@ const LinkCreateForm = () => {
 
 	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
 	const [enteredSlug, setEnteredSlug] = useState<String>("");
-	const [responseData, setResponseData] = useState<undefined | any>(null);
+	const [responseData, setResponseData] = useState<undefined | any>({
+		data: { shortUrl: "https://localhost:3000/yt" },
+	});
 	const [slugInvalidMsg, setSlugInvalidMsg] = useState<String>("");
 
 	const createShortLink = async () => {
@@ -29,19 +32,17 @@ const LinkCreateForm = () => {
 	};
 
 	return (
-		<section className={`w-full pl-8 p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)]`}>
+		<section className={`w-full p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)] md:pl-8`}>
 			{responseData && responseData.data ? (
-				<div className="pt-16">
+				<div className="pt-16 mb-20">
 					<div className="flex w-full text-left my-4">
-						<p className="font-medium text-lg leading-[34px]">
-							{responseData.data.shortUrl}
-						</p>
-						<button
-							className="py-1 px-3 border border-gray-400 mx-2 rounded"
-							onClick={() => window.open(responseData.data.shortUrl, "_blank")}
-						>
-							Go
-						</button>
+						<Link href={responseData.data.shortUrl} target="__blank">
+							<a className="bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text font-medium text-lg leading-[34px]">
+								{responseData.data.shortUrl}
+							</a>
+						</Link>
+					</div>
+					<div>
 						<button
 							className="py-1 px-3 border border-gray-400 mr-4 rounded"
 							onClick={() =>
@@ -50,17 +51,17 @@ const LinkCreateForm = () => {
 						>
 							Copy
 						</button>
+						<button
+							className="py-1 px-3 border border-gray-400 rounded"
+							onClick={() => {
+								setResponseData(null);
+								setEnteredSlug("");
+								setEnteredUserLink("");
+							}}
+						>
+							Reset
+						</button>
 					</div>
-					<button
-						className="py-1 px-3 border border-gray-400 mr-4 rounded"
-						onClick={() => {
-							setResponseData(null);
-							setEnteredSlug("");
-							setEnteredUserLink("");
-						}}
-					>
-						Reset
-					</button>
 				</div>
 			) : (
 				<>
@@ -82,10 +83,6 @@ const LinkCreateForm = () => {
 								setEnteredSlug(target.value);
 								if (target.value.length === 0) {
 									setSlugInvalidMsg("");
-									return;
-								}
-								if (target.value.length <= 3) {
-									setSlugInvalidMsg("Slug must be atleast 4 characters long");
 									return;
 								}
 								setSlugInvalidMsg("");
@@ -112,7 +109,7 @@ const LinkCreateForm = () => {
 						<button
 							className="px-3 py-1 rounded bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-500 dark:to-blue-500 text-white disabled:from-gray-400 disabled:to-gray-400 dark:disabled:from-gray-400 dark:disabled:to-gray-400 disabled:cursor-not-allowed"
 							onClick={createShortLink}
-							disabled={!enteredUserLink.length || enteredSlug.length < 4}
+							disabled={!enteredUserLink.length || !enteredSlug.length}
 						>
 							Create
 						</button>
