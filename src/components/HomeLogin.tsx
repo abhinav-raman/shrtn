@@ -12,7 +12,7 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 
 	if (!userData) {
 		return (
-			<section className={`w-full pr-8 pt-[64px] p-4 md:w-1/2`}>
+			<section className={`w-full pt-[64px] p-4 md:w-1/2 md:pr-8`}>
 				<div className="w-full flex items-center flex-col md:items-end">
 					<h1 className="w-full text-center text-2xl mb-4 font-medium md:text-right">
 						You know you can manage your links?
@@ -30,14 +30,14 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 	}
 
 	return (
-		<section className={`w-1/2 pr-8 pt-[64px] p-4`}>
-			<h1 className="w-full text-right text-4xl font-medium my-2">
+		<section className={`w-full pt-[64px] p-4 md:w-1/2 md:pr-8`}>
+			<h1 className="w-full text-center text-4xl font-medium my-2 md:text-right">
 				{userData.user?.name}
 			</h1>
-			<h3 className="w-full text-right text-xl font-extralight my-2">
+			<h3 className="w-full text-center text-xl font-extralight my-2 md:text-right">
 				{userData.user?.email}
 			</h3>
-			<div className="w-full text-right my-4">
+			<div className="w-full mt-12 text-center my-4 md:text-right md:mt-0">
 				<button
 					className="bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-500 dark:to-blue-500 text-white rounded py-1 px-3 mr-4"
 					onClick={() => router.push("/account")}
