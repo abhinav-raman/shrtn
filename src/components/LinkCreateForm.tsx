@@ -15,9 +15,7 @@ const LinkCreateForm = () => {
 
 	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
 	const [enteredSlug, setEnteredSlug] = useState<String>("");
-	const [responseData, setResponseData] = useState<undefined | any>({
-		data: { shortUrl: "https://localhost:3000/yt" },
-	});
+	const [responseData, setResponseData] = useState<undefined | any>(null);
 	const [slugInvalidMsg, setSlugInvalidMsg] = useState<String>("");
 
 	const createShortLink = async () => {
