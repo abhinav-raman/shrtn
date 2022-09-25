@@ -120,43 +120,43 @@ const Account = ({ data, user, error }: AccountProps) => {
 			<main className="w-full text-center">
 				<ThemeSwitcher />
 
-				<div className="py-4">
-					<h1 className="text-4xl font-medium text-transparent bg-clip-text bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 ">
+				<div className="py-4 font-Satoshi">
+					<h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 ">
 						{user.name}
 					</h1>
 					<h2 className="text-xl font-extralight">{user.email}</h2>
 				</div>
 
 				{error && (
-					<section className="w-full px-[15%] min-h-[20rem] flex justify-center items-center font-extralight">
+					<section className="w-full px-[15%] min-h-[20rem] flex justify-center items-center font-extralight md:px-0">
 						{"Can't fetch account data. Something went wrong"}
 					</section>
 				)}
 
 				{!error && linksData && linksData.length > 0 ? (
-					<section className="w-full px-[15%] min-h-[20rem] flex flex-col justify-start items-start">
+					<section className="w-full px-8 min-h-[20rem] flex flex-col justify-start items-start md:px-[15%]">
 						{slugDeleteApiMessage && (
 							<p className="w-full mt-8">{slugDeleteApiMessage}</p>
 						)}
 						<table className="w-full h-min mt-8">
 							<thead>
 								<tr className="h-12">
-									<th className="text-left p-2 w-1/6 font-light border-b border-slate-400">
+									<th className="text-left hidden p-2 font-light border-b border-slate-400 md:table-cell">
 										Created At
 									</th>
-									<th className="text-left p-2 pl-8 w-1/3 font-light border-b border-slate-400">
+									<th className="text-left p-2 pl-8 w-full font-light border-b border-slate-400 md:w-1/3">
 										Short link
 									</th>
-									<th className="text-left p-2 pl-8 w-1/2 font-light border-b border-slate-400">
+									<th className="text-left p-2 pl-8 w-1/2 font-light border-b border-slate-400 hidden md:table-cell">
 										Original link
 									</th>
-									<th className="w-8 border-b border-slate-400"></th>
+									<th className="w-16 border-b border-slate-400 md:w-8"></th>
 								</tr>
 							</thead>
 							<tbody>
 								{linksData.map((item: any) => (
 									<tr key={item.slug} className="h-8">
-										<td className="text-left py-2 pr-8 w-1/6">
+										<td className="text-left py-2 pr-8 hidden md:table-cell">
 											{new Date(item.createdAt).toDateString()}
 										</td>
 										<td className="bg-gradient-to-r text-left py-2 pr-8 w-2/6 font-semibold bg-black dark:bg-gray-100 hover:from-violet-800 hover:to-blue-800 dark:hover:from-violet-400 dark:hover:to-blue-400 text-transparent bg-clip-text">
@@ -164,8 +164,8 @@ const Account = ({ data, user, error }: AccountProps) => {
 												{item.shortUrl}
 											</a>
 										</td>
-										<td className="text-left py-2 w-2/6">{item.url}</td>
-										<td className="aspect-square p-1">
+										<td className="text-left py-2 w-2/6 hidden md:table-cell">{item.url}</td>
+										<td className="aspect-square p-1 w-16">
 											<div
 												className="relative w-6 aspect-square cursor-pointer"
 												onClick={() => {

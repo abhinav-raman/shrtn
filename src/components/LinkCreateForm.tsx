@@ -30,15 +30,20 @@ const LinkCreateForm = () => {
 	};
 
 	return (
-		<section className={`w-full p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)] md:pl-8`}>
+		<section
+			className={`w-full p-4 pr-4 md:w-1/2 md:pr-[min(10rem,10%)] md:pl-8`}
+		>
 			{responseData && responseData.data ? (
 				<div className="pt-16 mb-20">
 					<div className="flex w-full text-left my-4">
-						<Link href={responseData.data.shortUrl} target="__blank">
-							<a className="bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text font-medium text-lg leading-[34px]">
-								{responseData.data.shortUrl}
-							</a>
-						</Link>
+						<a
+							href={responseData.data.shortUrl}
+							target="_blank"
+							rel="noopener noreferrer"
+							className="bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text font-medium text-lg leading-[34px]"
+						>
+							{responseData.data.shortUrl}
+						</a>
 					</div>
 					<div>
 						<button
