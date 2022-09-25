@@ -13,6 +13,7 @@ module.exports = {
 			},
 			fontFamily: {
 				Josefin: ["Josefin Sans", ...defaultTheme.fontFamily.sans],
+				Satoshi: ["Satoshi", ...defaultTheme.fontFamily.sans],
 			},
 		},
 	},
