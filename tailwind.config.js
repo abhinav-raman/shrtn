@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
 	content: [
 		"./src/pages/**/*.{js,ts,jsx,tsx}",
@@ -10,7 +12,8 @@ module.exports = {
 				width: "width",
 			},
 			fontFamily: {
-				josefin: ["Josefin Sans", "sans-serif"],
+				Josefin: ["Josefin Sans", ...defaultTheme.fontFamily.sans],
+				Satoshi: ["Satoshi", ...defaultTheme.fontFamily.sans],
 			},
 		},
 	},
