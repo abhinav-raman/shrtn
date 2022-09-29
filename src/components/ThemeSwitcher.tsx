@@ -14,11 +14,11 @@ const ThemeSwitcher = () => {
 			onClick={themeContext.toggleTheme}
 		>
 			{themeContext.theme === THEMES.LIGHT ? (
-				<Image src={darkIcon} alt="Dark theme icon" width={40} height={40} />
+				<Image src={darkIcon} alt="dark theme icon" width={40} height={40} />
 			) : (
 				<Image
 					src={lightIcon}
-					alt="Light theme icon"
+					alt="light theme icon"
 					width={40}
 					height={40}
 					className="filter invert"
