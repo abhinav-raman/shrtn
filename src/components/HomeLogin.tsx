@@ -27,7 +27,7 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 			></div>
 			<aside
 				ref={sidebarRef}
-				className={`pt-16 pl-20 p-4 w-screen h-screen absolute top-0 left-0 transition -translate-x-full bg-black/25 dark:bg-black/75 md:dark:bg-transparent md:translate-x-0 md:relative z-40 md:w-1/2 md:h-auto md:pr-8 md:block md:z-0 md:bg-transparent`}
+				className={`rounded-r-2xl pt-16 pl-20 p-4 w-screen h-screen absolute top-0 left-0 transition -translate-x-full bg-black/25 dark:bg-black/75 md:dark:bg-transparent md:translate-x-0 md:relative z-40 md:w-1/2 md:h-auto md:pr-8 md:block md:z-0 md:bg-transparent`}
 			>
 				<div className="absolute p-4 z-50 right-[-3.5rem] top-4 rounded-tr rounded-br md:hidden">
 					<button
@@ -53,10 +53,10 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 				</div>
 				{userData ? (
 					<>
-						<h1 className="w-full text-left text-2xl font-medium my-2 md:text-4xl md:text-right">
+						<h1 className="w-full text-left text-2xl font-bold my-2 md:text-4xl md:text-right">
 							{userData.user?.name}
 						</h1>
-						<h3 className="w-full text-left text-lg font-extralight my-2 md:text-xl md:text-right">
+						<h3 className="w-full text-left text-lg font-light my-2 md:text-xl md:text-right">
 							{userData.user?.email}
 						</h3>
 						<div className="w-full mt-12 text-left my-4 text-lg md:text-base md:text-right md:mt-0">
