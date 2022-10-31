@@ -10,7 +10,7 @@ const checkIfSlugExists = debounce(async (slug: string) => {
 	return response;
 }, 400);
 
-const LinkCreateForm = () => {
+const LinkCreateForm = ({ baseUrl }: { baseUrl: string }) => {
 	const { data } = useSession();
 
 	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
@@ -73,7 +73,7 @@ const LinkCreateForm = () => {
 					</p>
 					<div className="w-full flex flex-col my-2 md:flex-row">
 						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0 whitespace-nowrap">
-							{BASE_URL}
+							{baseUrl + "/"}
 						</p>
 						<input
 							autoComplete="off"
