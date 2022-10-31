@@ -16,18 +16,25 @@ export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const session = await getSession(context);
+  const baseUrl = context.req.headers.host;
+
+  console.log(baseUrl);
+  
+
 	return {
 		props: {
 			userData: session,
+      baseUrl
 		},
 	};
 };
 
 type HomeProps = {
 	userData: Session | null;
+  baseUrl: string;
 };
 
-const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
+const Home: NextPage<HomeProps> = ({ userData, baseUrl }: HomeProps) => {
 	return (
 		<>
 			<Head>
@@ -59,7 +66,7 @@ const Home: NextPage<HomeProps> = ({ userData }: HomeProps) => {
 				<ThemeSwitcher />
 				<HomeLogin userData={userData} />
 				<span className="border-gray-600 border-b w-full h-full rounded hidden md:inline md:w-auto md:border-l md:border-b-0"></span>
-				<LinkCreateForm />
+				<LinkCreateForm baseUrl={baseUrl} />
 			</main>
 			<Footer />
 		</>
