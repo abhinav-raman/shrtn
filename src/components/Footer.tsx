@@ -6,13 +6,13 @@ const Footer = () => {
 			<h4 className="w-full text-center text-base">
 				Made with &#10084; by Abhinav<sup>&#169;</sup> 2022
 				<br />
-				<Link href={"https://github.com/abhinav-raman"} target="_blank">
+				<a href={"https://github.com/abhinav-raman"} target="_blank" rel="noreferrer">
 					Github
-				</Link>
+				</a>
 				{" | "}
-				<Link href={"https://twitter.com/_abhinavraman"} target="_blank">
+				<a href={"https://twitter.com/_abhinavraman"} target="_blank" rel="noreferrer">
 					Twitter
-				</Link>
+				</a>
 			</h4>
 		</footer>
 	);
