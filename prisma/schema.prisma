@@ -16,7 +16,6 @@ model ShortLink {
   slug      String   @id @unique
   createdAt DateTime @default(now())
   url       String   @db.VarChar(1000)
-  shortUrl  String   @db.VarChar(1000)
   userEmail String?  @db.VarChar(255)
 
   @@index(slug)

@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { BASE_URL } from "../../utils/constants";
 
 import { prisma } from "../../db/client";
 
@@ -7,19 +6,26 @@ export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
 ) {
-	const slug = req.query["slug"];
-	const userLink = req.query["userLink"];
-	const email = req.query["email"];
 
-	console.log("slug", slug);
-	console.log("userLink", userLink);
+  const params = req.body;
+
+  console.log("params => ", params);
+
+  const slug = params["slug"];
+	const userLink = params["userLink"];
+	const email = params["email"];
+  
+	// const slug = req.query["slug"];
+	// const userLink = req.query["userLink"];
+	// const email = req.query["email"];
+  const baseUrl = req.headers.host
 
 	if (!slug || typeof slug !== "string") {
-		return res.status(404).json({ error: "Please enter correct slug." });
+		return res.status(400).json({ error: "Please enter correct slug." });
 	}
 
 	if (!userLink || typeof userLink !== "string") {
-		return res.status(404).json({ error: "Please enter correct userLink." });
+		return res.status(400).json({ error: "Please enter correct userLink." });
 	}
 
 	const previousLink = await prisma.shortLink.findFirst({
@@ -31,7 +37,7 @@ export default async function handler(
 	});
 
 	if (previousLink) {
-		return res.status(404).json({
+		return res.status(400).json({
 			error: `Please enter another slug. This slug is already in use.`,
 		});
 	}
@@ -41,7 +47,6 @@ export default async function handler(
 			slug: slug,
 			createdAt: new Date(),
 			url: userLink,
-			shortUrl: `${BASE_URL}${slug}`,
 			userEmail: `${email}`,
 		},
 	});

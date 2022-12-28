@@ -3,16 +3,17 @@ import Link from "next/link";
 const Footer = () => {
 	return (
 		<footer className="w-full h-20">
-			<h4 className="w-full text-center text-base">
+			<h4 className="w-full text-center text-base mb-1">
 				Made with &#10084; by Abhinav<sup>&#169;</sup> 2022
-				<br />
-				<a href={"https://github.com/abhinav-raman"} target="_blank" rel="noreferrer">
+			</h4>
+			<h4 className="w-full text-center text-base">
+				<Link href={"https://github.com/abhinav-raman"} target="_blank">
 					Github
-				</a>
+				</Link>
 				{" | "}
-				<a href={"https://twitter.com/_abhinavraman"} target="_blank" rel="noreferrer">
+				<Link href={"https://twitter.com/_abhinavraman"} target="_blank">
 					Twitter
-				</a>
+				</Link>
 			</h4>
 		</footer>
 	);

@@ -1,6 +1,5 @@
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import { BASE_URL } from "../utils/constants";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -11,20 +10,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 	const session = await unstable_getServerSession(req, res, authOptions);
 
-	if (!session || !session.user || !session.user.email) {
-		return {
-			redirect: {
-				destination: "/",
-				permanent: false,
-				error: "You must be logged in to view this page",
-			},
-		};
-	}
-
 	if (slug) {
 		const slugData = await (
 			await fetch(
-				`${BASE_URL}/api/get-slug?slug=${slug}`
+				`${req.headers.host}/api/get-slug?slug=${slug}`
 			)
 		).json();
     console.log(slugData);

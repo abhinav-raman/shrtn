@@ -1,40 +1,40 @@
 import type {
 	GetServerSideProps,
 	GetServerSidePropsContext,
+	InferGetServerSidePropsType,
 	NextPage,
 } from "next";
-import { Session } from "next-auth";
+import React, { useEffect } from "react";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import HomeLogin from "../components/HomeLogin";
-import LinkCreateForm from "../components/LinkCreateForm";
 import ThemeSwitcher from "../components/ThemeSwitcher";
+import dynamic from "next/dynamic";
 
 export const getServerSideProps: GetServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const session = await getSession(context);
-  const baseUrl = context.req.headers.host;
-
-  console.log(baseUrl);
-  
+	const host = context.req.headers.host;
 
 	return {
 		props: {
 			userData: session,
-      baseUrl
+			host: host,
 		},
 	};
 };
 
-type HomeProps = {
-	userData: Session | null;
-  baseUrl: string;
-};
+const LinkCreateForm = dynamic(() => import("../components/LinkCreateForm"));
 
-const Home: NextPage<HomeProps> = ({ userData, baseUrl }: HomeProps) => {
+export default function Home(
+	props: InferGetServerSidePropsType<typeof getServerSideProps>
+) {
+	useEffect(() => {
+		console.log(props.host);
+	}, []);
 	return (
 		<>
 			<Head>
@@ -64,13 +64,11 @@ const Home: NextPage<HomeProps> = ({ userData, baseUrl }: HomeProps) => {
 			<Header />
 			<main className="flex flex-col-reverse w-full justify-center p-4 md:h-[calc(60vh-6rem)] md:flex-row">
 				<ThemeSwitcher />
-				<HomeLogin userData={userData} />
-				<span className="border-gray-600 border-b w-full h-full rounded hidden md:inline md:w-auto md:border-l md:border-b-0"></span>
-				<LinkCreateForm baseUrl={baseUrl} />
+				<HomeLogin userData={props.userData} />
+				<span className="border-gray-600 border-b w-full h-full rounded hidden md:inline md:w-auto md:border-l md:border-b-0" />
+				<LinkCreateForm host={props.host} />
 			</main>
 			<Footer />
 		</>
 	);
-};
-
-export default Home;
+}

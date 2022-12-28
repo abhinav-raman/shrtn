@@ -1,33 +1,29 @@
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import { debounce } from "ts-debounce";
-import { BASE_URL } from "../utils/constants";
 
 const checkIfSlugExists = debounce(async (slug: string) => {
 	const response = await (await fetch(`/api/get-slug?slug=${slug}`)).json();
-	return response;
-}, 400);
+	console.log(response);
 
-const LinkCreateForm = ({ baseUrl }: { baseUrl: string }) => {
+	return response;
+}, 500);
+
+type LinkCreateFormProps = {
+	host: string;
+};
+
+const LinkCreateForm = (props: LinkCreateFormProps) => {
 	const { data } = useSession();
 
 	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
 	const [enteredSlug, setEnteredSlug] = useState<String>("");
 	const [responseData, setResponseData] = useState<undefined | any>(null);
 	const [slugInvalidMsg, setSlugInvalidMsg] = useState<String>("");
-
-	const createShortLink = async () => {
-		console.log(enteredUserLink, enteredSlug);
-
-		const result: any = await (
-			await fetch(
-				`/api/create-url?slug=${enteredSlug}&userLink=${enteredUserLink}&email=${data?.user?.email}`
-			)
-		).json();
-		setResponseData(result);
-	};
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const router = useRouter();
 
 	return (
 		<section
@@ -49,7 +45,7 @@ const LinkCreateForm = ({ baseUrl }: { baseUrl: string }) => {
 						<button
 							className="py-1 px-3 border border-gray-400 mr-4 rounded"
 							onClick={() =>
-								navigator.clipboard.writeText(responseData.data.shortUrl)
+								navigator.clipboard.writeText(responseData.data.url)
 							}
 						>
 							Copy
@@ -73,7 +69,7 @@ const LinkCreateForm = ({ baseUrl }: { baseUrl: string }) => {
 					</p>
 					<div className="w-full flex flex-col my-2 md:flex-row">
 						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0 whitespace-nowrap">
-							{baseUrl + "/"}
+							{props.host + "/"}
 						</p>
 						<input
 							autoComplete="off"
@@ -111,11 +107,33 @@ const LinkCreateForm = ({ baseUrl }: { baseUrl: string }) => {
 					<div className="w-full text-left my-4">
 						<button
 							className="px-3 py-1 rounded bg-gradient-to-r from-violet-800 to-blue-800 dark:from-violet-500 dark:to-blue-500 text-white disabled:from-gray-400 disabled:to-gray-400 dark:disabled:from-gray-400 dark:disabled:to-gray-400 disabled:cursor-not-allowed"
-							onClick={createShortLink}
+							onClick={async () => {
+								const requestBody = {
+									slug: enteredSlug,
+									userLink: enteredUserLink,
+									email: data?.user?.email,
+								};
+								console.log(requestBody);
+								setIsLoading(true);
+								const result: any = await (
+									await fetch(`/api/create-url`, {
+										method: "POST",
+										headers: {
+											"Content-Type": "application/json",
+										},
+										body: JSON.stringify(requestBody),
+									})
+								).json();
+								setIsLoading(false);
+								console.log("result", result);
+
+								setResponseData(result);
+							}}
 							disabled={!enteredUserLink.length || !enteredSlug.length}
 						>
 							Create
 						</button>
+						{isLoading && <p>loading...</p>}
 					</div>
 				</>
 			)}
