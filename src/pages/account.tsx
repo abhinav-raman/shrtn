@@ -6,7 +6,7 @@ import Head from "next/head";
 import Popup from "reactjs-popup";
 
 import { authOptions } from "./api/auth/[...nextauth]";
-import { API_SUCCESS, BASE_URL } from "../utils/constants";
+import { API_SUCCESS } from "../utils/constants";
 
 import { prisma } from "../db/client";
 import ThemeSwitcher from "../components/ThemeSwitcher";
@@ -17,6 +17,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
 	const session = await unstable_getServerSession(req, res, authOptions);
 
+	const host = req.headers.host;
+
 	if (session && session.user && session.user.email) {
 		try {
 			const data = await prisma.shortLink.findMany({
@@ -26,6 +28,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 					},
 				},
 			});
+
+			console.log("data => ", data);
+
 			return {
 				props: {
 					data: JSON.parse(JSON.stringify(data)),
@@ -33,13 +38,17 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 						name: session.user.name,
 						email: session.user.email,
 					},
+					host: host,
 				},
 			};
 		} catch (err) {
+			console.log("err => ", err);
+
 			return {
 				props: {
 					data: [],
 					error: JSON.stringify(err),
+					host: host,
 				},
 			};
 		}
@@ -61,9 +70,10 @@ type AccountProps = {
 		name: string;
 		email: string;
 	};
+	host: string;
 };
 
-const Account = ({ data, user, error }: AccountProps) => {
+const Account = ({ data, user, error, host }: AccountProps) => {
 	const [linksData, setLinksData] = useState(data);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [selectedToDelete, setSelectedToDelete] = useState<string | null>(null);
@@ -75,7 +85,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 		console.log(slug);
 
 		const response = await (
-			await fetch(`${BASE_URL}/api/delete-url?slug=${slug}`)
+			await fetch(`${"test"}/api/delete-url?slug=${slug}`)
 		).json();
 
 		setSlugDeleteAPiMessage(response.status.message);
@@ -113,7 +123,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 	return (
 		<>
 			<Head>
-				<title>Shrtn | {user.name}</title>
+				<title>Shrtn | {user?.name || ""}</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
@@ -122,9 +132,9 @@ const Account = ({ data, user, error }: AccountProps) => {
 
 				<div className="py-4 font-Satoshi">
 					<h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 ">
-						{user.name}
+						{user?.name}
 					</h1>
-					<h2 className="text-xl font-extralight">{user.email}</h2>
+					<h2 className="text-xl font-extralight">{user?.email}</h2>
 				</div>
 
 				{error && (
@@ -160,11 +170,17 @@ const Account = ({ data, user, error }: AccountProps) => {
 											{new Date(item.createdAt).toDateString()}
 										</td>
 										<td className="bg-gradient-to-r text-left py-2 pr-8 w-2/6 font-semibold bg-black dark:bg-gray-100 hover:from-violet-800 hover:to-blue-800 dark:hover:from-violet-400 dark:hover:to-blue-400 text-transparent bg-clip-text">
-											<a href={item.shortUrl} target="_blank" rel="noreferrer">
-												{item.shortUrl}
-											</a>
+											{/* <a
+												href={host + "/" + item.slug}
+												target="_blank"
+												rel="noreferrer"
+											> */}
+											{host + "/" + item.slug}
+											{/* </a> */}
 										</td>
-										<td className="text-left py-2 w-2/6 hidden md:table-cell">{item.url}</td>
+										<td className="text-left py-2 w-2/6 hidden md:table-cell">
+											{item.url}
+										</td>
 										<td className="aspect-square p-1 w-16">
 											<div
 												className="relative w-6 aspect-square cursor-pointer"
@@ -173,7 +189,7 @@ const Account = ({ data, user, error }: AccountProps) => {
 													setSelectedToDelete(item.shortUrl);
 												}}
 											>
-												<Image src={deleteIcon} alt="delete" layout="fill" />
+												<Image src={deleteIcon} alt="delete" />
 											</div>
 
 											<Popup
