@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
-import { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { API_SUCCESS } from "../utils/constants";
+import { API_SUCCESS, BASE_URL } from "../utils/constants";
 import { prisma } from "../db/client";
 
 const Image = dynamic(() => import("next/image"));
@@ -17,8 +17,6 @@ import deleteIcon from "../assets/images/delete-icon.png";
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
 	const session = await unstable_getServerSession(req, res, authOptions);
-
-	const host = req.headers.host;
 
 	if (session && session.user && session.user.email) {
 		try {
@@ -39,7 +37,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 						name: session.user.name,
 						email: session.user.email,
 					},
-					host: host,
+					host:
+						process.env.NODE_ENV === "development"
+							? BASE_URL.DEV
+							: BASE_URL.PROD,
+					err: {},
 				},
 			};
 		} catch (err) {
@@ -48,8 +50,15 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 			return {
 				props: {
 					data: [],
-					error: JSON.stringify(err),
-					host: host,
+					error: JSON.parse(JSON.stringify(err)),
+					user: {
+						name: session.user.name,
+						email: session.user.email,
+					},
+					host:
+						process.env.NODE_ENV === "development"
+							? BASE_URL.DEV
+							: BASE_URL.PROD,
 				},
 			};
 		}
@@ -64,17 +73,12 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	};
 }
 
-type AccountProps = {
-	data: any;
-	error: any;
-	user: {
-		name: string;
-		email: string;
-	};
-	host: string;
-};
-
-const Account = ({ data, user, error, host }: AccountProps) => {
+const Account = ({
+	data,
+	user,
+	error,
+	host,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
 	const [linksData, setLinksData] = useState(data);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	// const [selectedToDelete, setSelectedToDelete] = useState<string | null>(null);
@@ -151,7 +155,7 @@ const Account = ({ data, user, error, host }: AccountProps) => {
 				)}
 
 				{!error && linksData && linksData.length > 0 ? (
-					<section className="w-full px-8 min-h-[20rem] flex flex-col justify-start items-start md:px-[15%]">
+					<section className="w-full px-8 min-h-[20rem] flex flex-col justify-start items-start">
 						{slugDeleteApiMessage && (
 							<p className="w-full mt-8">{slugDeleteApiMessage}</p>
 						)}
@@ -177,28 +181,32 @@ const Account = ({ data, user, error, host }: AccountProps) => {
 											{new Date(item.createdAt).toDateString()}
 										</td>
 										<td className="bg-gradient-to-r text-left py-2 pr-8 w-2/6 font-semibold bg-black dark:bg-gray-100 hover:from-violet-800 hover:to-blue-800 dark:hover:from-violet-400 dark:hover:to-blue-400 text-transparent bg-clip-text">
-											{/* <a
+											<a
 												href={host + "/" + item.slug}
 												target="_blank"
 												rel="noreferrer"
-											> */}
-											{host + "/" + item.slug}
-											{/* </a> */}
+											>
+												<div className="h-full cursor-pointer flex items-center">
+													{host + "/" + item.slug}
+												</div>
+											</a>
 										</td>
-										<td className="text-left py-2 w-2/6 hidden md:table-cell">
+										<td className="text-left py-2 w-2/6 hidden md:table-cell whitespace-nowrap overflow-hidden text-ellipsis">
 											{item.url}
 										</td>
-										<td className="aspect-square p-1 w-16">
-											<div
-												className="relative w-6 aspect-square cursor-pointer"
+										<td className="aspect-square p-2 w-16 h-full relative flex justify-end items-center">
+											<Image
+												src={deleteIcon}
+												alt="delete-icon"
+												width={"28"}
+												height={"28"}
+												className="cursor-pointer"
 												onClick={() => {
 													setShowDeleteModal(true);
 												}}
-											>
-												<Image src={deleteIcon} alt="delete" />
-											</div>
+											/>
 											<YesAndNoPopup
-												title={`Delete ${item.url}?`}
+												title={`Delete "${item.url.slice(0, 40) + "..."}" ?`}
 												isOpen={showDeleteModal}
 												onClose={onDeletePopupClose}
 												onYes={() => onDeletePopupYes(item.slug)}
