@@ -1,5 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
+import { BASE_URL } from "../utils/constants";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -13,11 +14,13 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	if (slug) {
 		const slugData = await (
 			await fetch(
-				`${req.headers.host}/api/get-slug?slug=${slug}`
+				`${
+					process.env.NODE_ENV === "development" ? BASE_URL.DEV : BASE_URL.PROD
+				}/api/get-url?slug=${slug}`
 			)
 		).json();
-    console.log(slugData);
-    
+		console.log(slugData);
+
 		return {
 			redirect: {
 				destination: slugData.data.url,
@@ -35,6 +38,4 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	};
 }
 
-export default function Slug() {
-  
-}
+export default function Slug() {}
