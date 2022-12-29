@@ -1,8 +1,9 @@
 import dynamic from "next/dynamic";
 import { useContext } from "react";
+import { ThemeContext, THEMES } from "../context/ThemeContext";
+
 const Image = dynamic(() => import("next/image"));
 
-import { ThemeContext, THEMES } from "../context/ThemeContext";
 import darkIcon from "../assets/images/dark-theme-icon.svg";
 import lightIcon from "../assets/images/light-theme-icon.svg";
 

@@ -1,5 +1,6 @@
 import { signIn } from "next-auth/react";
-import Image from "next/image";
+import dynamic from "next/dynamic";
+const Image = dynamic(() => import("next/image"));
 
 import googleLogo from "../assets/images/google-icon-logo.svg";
 
