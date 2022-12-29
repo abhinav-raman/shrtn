@@ -1,19 +1,21 @@
 import type {
-	GetServerSideProps,
 	GetServerSidePropsContext,
 	InferGetServerSidePropsType,
-	NextPage,
 } from "next";
-import React, { useEffect } from "react";
 import { getSession } from "next-auth/react";
-import Head from "next/head";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import HomeLogin from "../components/HomeLogin";
-import ThemeSwitcher from "../components/ThemeSwitcher";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
+import { BASE_URL } from "../utils/constants";
 
-export const getServerSideProps: GetServerSideProps = async (
+const Head = dynamic(() => import("next/head"));
+const Footer = dynamic(() => import("../components/Footer"));
+const Header = dynamic(() => import("../components/Header"));
+const HomeLogin = dynamic(() => import("../components/HomeLogin"));
+const ThemeSwitcher = dynamic(() => import("../components/ThemeSwitcher"));
+const HomePageLayout = dynamic(() => import("../components/HomePageLayout"));
+const LinkCreateForm = dynamic(() => import("../components/LinkCreateForm"));
+
+export const getServerSideProps = async (
 	context: GetServerSidePropsContext
 ) => {
 	const session = await getSession(context);
@@ -22,19 +24,16 @@ export const getServerSideProps: GetServerSideProps = async (
 	return {
 		props: {
 			userData: session,
-			host: host,
+			host:
+				process.env.NODE_ENV === "development" ? BASE_URL.DEV : BASE_URL.PROD,
 		},
 	};
 };
 
-const LinkCreateForm = dynamic(() => import("../components/LinkCreateForm"));
-
-export default function Home(
-	props: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
-	useEffect(() => {
-		console.log(props.host);
-	}, []);
+function Home({
+	userData,
+	host,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {
 	return (
 		<>
 			<Head>
@@ -62,13 +61,14 @@ export default function Home(
 			</Head>
 
 			<Header />
-			<main className="flex flex-col-reverse w-full justify-center p-4 md:h-[calc(60vh-6rem)] md:flex-row">
-				<ThemeSwitcher />
-				<HomeLogin userData={props.userData} />
-				<span className="border-gray-600 border-b w-full h-full rounded hidden md:inline md:w-auto md:border-l md:border-b-0" />
-				<LinkCreateForm host={props.host} />
-			</main>
+			<ThemeSwitcher />
+			<HomePageLayout
+				firstComponent={<HomeLogin userData={userData} />}
+				secondComponent={<LinkCreateForm host={host} />}
+			/>
 			<Footer />
 		</>
 	);
 }
+
+export default Home;

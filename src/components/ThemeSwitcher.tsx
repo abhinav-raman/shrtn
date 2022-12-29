@@ -1,5 +1,6 @@
-import Image from "next/image";
+import dynamic from "next/dynamic";
 import { useContext } from "react";
+const Image = dynamic(() => import("next/image"));
 
 import { ThemeContext, THEMES } from "../context/ThemeContext";
 import darkIcon from "../assets/images/dark-theme-icon.svg";
@@ -18,9 +19,9 @@ const ThemeSwitcher = () => {
 			) : (
 				<Image
 					src={lightIcon}
-					alt="light theme icon"
 					width={40}
 					height={40}
+					alt="light theme icon"
 					className="filter invert"
 				/>
 			)}

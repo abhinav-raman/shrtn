@@ -3,7 +3,6 @@ import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Image from "next/image";
 import Head from "next/head";
-import Popup from "reactjs-popup";
 
 import { authOptions } from "./api/auth/[...nextauth]";
 import { API_SUCCESS } from "../utils/constants";
@@ -12,6 +11,7 @@ import { prisma } from "../db/client";
 import ThemeSwitcher from "../components/ThemeSwitcher";
 import deleteIcon from "../assets/images/delete-icon.png";
 import Footer from "../components/Footer";
+import YesAndNoPopup from "../components/YesAndNoPopup";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
@@ -76,28 +76,34 @@ type AccountProps = {
 const Account = ({ data, user, error, host }: AccountProps) => {
 	const [linksData, setLinksData] = useState(data);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
-	const [selectedToDelete, setSelectedToDelete] = useState<string | null>(null);
+	// const [selectedToDelete, setSelectedToDelete] = useState<string | null>(null);
 	const [slugDeleteApiMessage, setSlugDeleteAPiMessage] = useState("");
 
 	const nextRef = useRef<any>();
 
-	const linkDeleteHandler = async (slug: string) => {
-		console.log(slug);
+	const onDeletePopupClose = () => {
+		setShowDeleteModal(false);
+	};
 
-		const response = await (
-			await fetch(`${"test"}/api/delete-url?slug=${slug}`)
-		).json();
+	const onDeletePopupYes = (slug: string) => {
+		linkDeleteHandler(slug);
+	};
+
+	const onDeletePopupNo = () => {
+		setShowDeleteModal(false);
+	};
+
+	const linkDeleteHandler = async (slug: string) => {
+		const response = await (await fetch(`/api/delete-url?slug=${slug}`)).json();
 
 		setSlugDeleteAPiMessage(response.status.message);
 		setSlugDeleteAPiMessage("");
 
 		if (response.status.code === API_SUCCESS) {
-			console.log("Deleted successfully", response);
 			setLinksData(linksData.filter((link: any) => link.slug !== slug));
 		}
 
 		setShowDeleteModal(false);
-		setSelectedToDelete(null);
 	};
 
 	useEffect(() => {
@@ -186,43 +192,17 @@ const Account = ({ data, user, error, host }: AccountProps) => {
 												className="relative w-6 aspect-square cursor-pointer"
 												onClick={() => {
 													setShowDeleteModal(true);
-													setSelectedToDelete(item.shortUrl);
 												}}
 											>
 												<Image src={deleteIcon} alt="delete" />
 											</div>
-
-											<Popup
-												modal={true}
-												open={showDeleteModal}
-												onClose={() => setShowDeleteModal(false)}
-												closeOnDocumentClick={false}
-												closeOnEscape
-												lockScroll
-											>
-												<div className="border border-gray-600 dark:border-gray-600 rounded-lg bg-white dark:bg-black/95 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-													<p className="w-full p-4 text-center px-8">
-														Delete {selectedToDelete}?
-													</p>
-													<div className="w-full h-8 flex border-t border-gray-600 dark:border-gray-600">
-														<button
-															className="w-1/2 rounded-bl-lg transition hover:bg-gray-200 dark:hover:bg-gray-800"
-															onClick={() => linkDeleteHandler(item.slug)}
-														>
-															Yes
-														</button>
-														<button
-															className="w-1/2 rounded-br-lg transition hover:bg-gray-200 border-l border-gray-600 dark:border-gray-600 dark:hover:bg-gray-800"
-															onClick={() => {
-																setShowDeleteModal(false);
-																setSelectedToDelete(null);
-															}}
-														>
-															No
-														</button>
-													</div>
-												</div>
-											</Popup>
+											<YesAndNoPopup
+												title={`Delete ${item.url}?`}
+												isOpen={showDeleteModal}
+												onClose={onDeletePopupClose}
+												onYes={() => onDeletePopupYes(item.slug)}
+												onNo={onDeletePopupNo}
+											/>
 										</td>
 									</tr>
 								))}

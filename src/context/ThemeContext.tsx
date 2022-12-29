@@ -25,7 +25,6 @@ export const ThemeContextProvider = ({ children }: any) => {
 	useEffect(() => {
 		bodyRef.current = document.querySelector("body");
 		const localTheme = localStorage.getItem("user-selected-theme") as ThemeType;
-		console.log("theme", localTheme);
 		setTheme(localTheme || THEMES.DARK);
 		handleThemeChangeLogic(localTheme || THEMES.DARK);
 	}, []);

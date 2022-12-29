@@ -6,8 +6,6 @@ import { debounce } from "ts-debounce";
 
 const checkIfSlugExists = debounce(async (slug: string) => {
 	const response = await (await fetch(`/api/get-slug?slug=${slug}`)).json();
-	console.log(response);
-
 	return response;
 }, 500);
 
@@ -15,7 +13,7 @@ type LinkCreateFormProps = {
 	host: string;
 };
 
-const LinkCreateForm = (props: LinkCreateFormProps) => {
+const LinkCreateForm = ({ host }: LinkCreateFormProps) => {
 	const { data } = useSession();
 
 	const [enteredUserLink, setEnteredUserLink] = useState<String>("");
@@ -33,12 +31,12 @@ const LinkCreateForm = (props: LinkCreateFormProps) => {
 				<div className="pt-16 mb-20">
 					<div className="flex w-full text-left my-4">
 						<a
-							href={responseData.data.shortUrl}
+							href={host + "/" + responseData.data.slug}
 							target="_blank"
 							rel="noopener noreferrer"
-							className="bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text font-medium text-lg leading-[34px]"
+							className="cursor-pointer bg-gradient-to-r bg-black dark:bg-gray-100 from-violet-800 to-blue-800 dark:from-violet-400 dark:to-blue-400 text-transparent bg-clip-text font-medium text-lg leading-[34px]"
 						>
-							{responseData.data.shortUrl}
+							{host + "/" + responseData.data.slug}
 						</a>
 					</div>
 					<div>
@@ -69,7 +67,7 @@ const LinkCreateForm = (props: LinkCreateFormProps) => {
 					</p>
 					<div className="w-full flex flex-col my-2 md:flex-row">
 						<p className="pr-2 py-1 font-medium mr-8 my-2 md:my-0 whitespace-nowrap">
-							{props.host + "/"}
+							{host + "/"}
 						</p>
 						<input
 							autoComplete="off"
