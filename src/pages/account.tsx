@@ -1,17 +1,18 @@
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import { GetServerSidePropsContext } from "next";
 import { unstable_getServerSession } from "next-auth";
-import Image from "next/image";
-import Head from "next/head";
-
 import { authOptions } from "./api/auth/[...nextauth]";
 import { API_SUCCESS } from "../utils/constants";
-
 import { prisma } from "../db/client";
-import ThemeSwitcher from "../components/ThemeSwitcher";
+
+const Image = dynamic(() => import("next/image"));
+const Head = dynamic(() => import("next/head"));
+const ThemeSwitcher = dynamic(() => import("../components/ThemeSwitcher"));
+const Footer = dynamic(() => import("../components/Footer"));
+const YesAndNoPopup = dynamic(() => import("../components/YesAndNoPopup"));
+
 import deleteIcon from "../assets/images/delete-icon.png";
-import Footer from "../components/Footer";
-import YesAndNoPopup from "../components/YesAndNoPopup";
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;

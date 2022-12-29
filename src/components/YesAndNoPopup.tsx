@@ -1,4 +1,6 @@
-import Popup from "reactjs-popup";
+import dynamic from "next/dynamic";
+
+const Popup = dynamic(() => import("reactjs-popup"));
 
 type YesAndNoPopupPropTypes = {
 	isOpen: boolean;

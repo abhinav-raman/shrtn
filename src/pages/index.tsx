@@ -1,10 +1,9 @@
+import dynamic from "next/dynamic";
 import type {
 	GetServerSidePropsContext,
 	InferGetServerSidePropsType,
 } from "next";
 import { getSession } from "next-auth/react";
-import dynamic from "next/dynamic";
-import { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 
 const Head = dynamic(() => import("next/head"));

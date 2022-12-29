@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
-import GoogleLoginBtn from "./GoogleLoginBtn";
+const GoogleLoginBtn = dynamic(() => import("./GoogleLoginBtn"));
 
 type HomeLoginProps = {
 	userData: Session | null;
