@@ -37,7 +37,7 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 				<div className="absolute p-4 z-50 right-[-3.5rem] top-4 rounded-tr rounded-br md:hidden">
 					<button
 						ref={backBtnRef}
-						className={`flex flex-col p-1 rotate-180`}
+						className={`flex flex-col p-1 rotate-180 dark:invert`}
 						onClick={() => {
 							if (sidebarRef.current?.classList.contains("-translate-x-full")) {
 								sidebarRef.current?.classList.remove("-translate-x-full");
