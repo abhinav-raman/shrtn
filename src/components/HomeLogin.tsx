@@ -4,6 +4,9 @@ import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useRef } from "react";
 const GoogleLoginBtn = dynamic(() => import("./GoogleLoginBtn"));
+const Image = dynamic(() => import("next/image"));
+
+import backIcon from "../assets/images/back-icon.svg";
 
 type HomeLoginProps = {
 	userData: Session | null;
@@ -13,6 +16,7 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 	const router = useRouter();
 	const sidebarRef = useRef<HTMLElement | null>(null);
 	const backdropRef = useRef<HTMLDivElement | null>(null);
+	const backBtnRef = useRef<HTMLButtonElement | null>(null);
 
 	return (
 		<>
@@ -32,24 +36,31 @@ const HomeLogin = ({ userData }: HomeLoginProps) => {
 			>
 				<div className="absolute p-4 z-50 right-[-3.5rem] top-4 rounded-tr rounded-br md:hidden">
 					<button
-						className={`flex flex-col p-1`}
+						ref={backBtnRef}
+						className={`flex flex-col p-1 rotate-180`}
 						onClick={() => {
 							if (sidebarRef.current?.classList.contains("-translate-x-full")) {
 								sidebarRef.current?.classList.remove("-translate-x-full");
 								sidebarRef.current?.classList.add("-translate-x-[4rem]");
 								backdropRef.current?.classList.remove("-translate-x-full");
 								backdropRef.current?.classList.add("translate-x-0");
+								backdropRef.current?.classList.add("rotate-180");
+                backBtnRef.current?.classList.remove("rotate-180");
+                backBtnRef.current?.classList.add("rotate-0");
 							} else {
-								sidebarRef.current?.classList.add("-translate-x-full");
+                sidebarRef.current?.classList.add("-translate-x-full");
 								sidebarRef.current?.classList.remove("-translate-x-[4rem]");
 								backdropRef.current?.classList.remove("translate-x-0");
 								backdropRef.current?.classList.add("-translate-x-full");
+                backBtnRef.current?.classList.remove("rotate-0");
+                backBtnRef.current?.classList.add("rotate-180");
 							}
 						}}
 					>
-						<div className="w-4 h-[2px] border-0 bg-black dark:bg-white rotate-45 translate-x-[4px] -translate-y-[3px]"></div>
+						<Image src={backIcon} alt="back-icon" height={20} width={20} />
+						{/* <div className="w-4 h-[2px] border-0 bg-black dark:bg-white rotate-45 translate-x-[4px] -translate-y-[3px]"></div>
 						<div className="w-4 h-[2px] border-0 bg-black dark:bg-white"></div>
-						<div className="w-4 h-[2px] border-0 bg-black dark:bg-white -rotate-45 translate-x-[4px] translate-y-[3px]"></div>
+						<div className="w-4 h-[2px] border-0 bg-black dark:bg-white -rotate-45 translate-x-[4px] translate-y-[3px]"></div> */}
 					</button>
 				</div>
 				{userData ? (
