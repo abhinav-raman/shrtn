@@ -20,9 +20,7 @@ export default async function handler(
 	});
 
 	if (!data) {
-		return res
-			.status(404)
-			.json({ status: 404, error: "Please enter valid slug." });
+		return res.status(404).json({ status: 404, error: "Slug does not exist." });
 	}
 
 	return res
