@@ -18,6 +18,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 	const { req, res } = context;
 	const session = await unstable_getServerSession(req, res, authOptions);
 
+	res.setHeader("Content-Type", "application/json");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "s-maxage=1000000000, stale-while-revalidate");
+
 	if (session && session.user && session.user.email) {
 		try {
 			const data = await prisma.shortLink.findMany({

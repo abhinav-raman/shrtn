@@ -23,6 +23,10 @@ export default async function handler(
 		return res.status(404).json({ status: 404, error: "Slug does not exist." });
 	}
 
+	res.setHeader("Content-Type", "application/json");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Cache-Control", "s-maxage=1000000000, stale-while-revalidate");
+
 	return res
 		.status(200)
 		.json({ status: 200, data: JSON.parse(JSON.stringify(data)) });
