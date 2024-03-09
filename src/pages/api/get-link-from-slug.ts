@@ -20,17 +20,16 @@ export default async function handler(
         );
 
         if (result) {
-            return res.status(500).json({
-                data: "Slug already exists",
+            return res.status(200).json({
+                data: { link: result["userLink"] },
             });
         }
-
-        return res.status(200).json({
-            data: "Valid slug",
+        return res.status(404).json({
+            data: "could not find the URL",
         });
     } catch (e) {
         return res.status(500).json({
-            data: e,
+            error: e,
         });
     }
 }
